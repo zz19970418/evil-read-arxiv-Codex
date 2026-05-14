@@ -76,12 +76,28 @@ function mediaFiles(folder) {
   const pdf = walk(folder).find((file) => /\.pdf$/i.test(file));
   return {
     images,
+    imageCount: images.length,
     localPdf: pdf ? {
       name: path.basename(pdf),
       path: path.relative(VAULT_ROOT, pdf).replace(/\\/g, "/"),
       url: fileUrl(pdf),
     } : null,
   };
+}
+
+function mtimeIso(file) {
+  try {
+    return fs.statSync(file).mtime.toISOString();
+  } catch {
+    return "";
+  }
+}
+
+function pathDate(fileOrFolder) {
+  const normalized = fileOrFolder.replace(/\\/g, "/");
+  return normalized.match(/20_Research\/Papers\/(\d{4}-\d{2}-\d{2})/)?.[1]
+    || normalized.match(/30_confpapers\/(\d{4}-\d{2}-\d{2})/)?.[1]
+    || "";
 }
 
 function confAnalysisIndex() {
@@ -96,7 +112,10 @@ function confAnalysisIndex() {
       markdown: readText(noteFile),
       folder: path.relative(VAULT_ROOT, path.dirname(metaFile)).replace(/\\/g, "/"),
       images: media.images,
+      imageCount: media.imageCount,
       localPdf: media.localPdf,
+      modifiedAt: mtimeIso(noteFile),
+      date: pathDate(noteFile),
     });
   }
   return index;
@@ -143,8 +162,12 @@ function fromPaperNote(file) {
     matchedKeywords: [],
     summary: "本地论文笔记，点击查看详情。",
     path: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+    folder: path.relative(VAULT_ROOT, path.dirname(file)).replace(/\\/g, "/"),
+    date: pathDate(file),
+    modifiedAt: mtimeIso(file),
     markdown: text,
     images: media.images,
+    imageCount: media.imageCount,
     localPdf: media.localPdf,
   };
 }
@@ -174,13 +197,19 @@ for (const [idx, paper] of (run.topPapers || []).entries()) {
     analysisFolder: analysis?.folder || null,
     analysisMarkdown: analysis?.markdown || null,
     images: analysis?.images || [],
+    imageCount: analysis?.imageCount || analysis?.images?.length || 0,
     localPdf: analysis?.localPdf || null,
+    folder: analysis?.folder || "",
+    date: analysis?.date || pathDate(runFile || ""),
+    modifiedAt: analysis?.modifiedAt || mtimeIso(runFile || ""),
   });
 }
 
 for (const file of paperNoteFiles().slice(0, 20)) {
   papers.push(fromPaperNote(file));
 }
+
+const totalImages = papers.reduce((sum, paper) => sum + (paper.imageCount || paper.images?.length || 0), 0);
 
 const data = {
   generatedAt: new Date().toISOString(),
@@ -189,6 +218,7 @@ const data = {
     confFiltered: run.status?.filtered ?? 0,
     confRateLimited: Boolean(run.status?.s2RateLimited),
     localNotes: paperNoteFiles().length,
+    totalImages,
     latestConfRun: runFile ? path.relative(VAULT_ROOT, runFile).replace(/\\/g, "/") : null,
   },
   runFile: runFile ? path.relative(VAULT_ROOT, runFile).replace(/\\/g, "/") : null,

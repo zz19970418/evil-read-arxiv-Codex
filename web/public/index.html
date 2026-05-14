@@ -9,7 +9,7 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <div>
+        <div class="brand-block">
           <h1>论文推荐工作台</h1>
           <p>本地 vault 数据 · arXiv / 顶会论文 · 中文阅读辅助</p>
         </div>
@@ -38,6 +38,19 @@
               <option value="starred">重点</option>
               <option value="hidden">暂不关注</option>
             </select>
+            <select id="sortSelect" aria-label="排序">
+              <option value="score">评分优先</option>
+              <option value="recent">最近生成</option>
+              <option value="images">图片优先</option>
+              <option value="title">标题 A-Z</option>
+            </select>
+          </div>
+          <div class="list-meta-row">
+            <span id="resultCount">0 篇论文</span>
+            <div class="segmented" aria-label="列表密度">
+              <button type="button" class="segmented-button active" data-view="comfortable">舒适</button>
+              <button type="button" class="segmented-button" data-view="compact">紧凑</button>
+            </div>
           </div>
           <div class="paper-list" id="paperList"></div>
         </aside>
@@ -49,6 +62,14 @@
           </div>
         </section>
       </main>
+    </div>
+
+    <div class="image-modal" id="imageModal" hidden>
+      <button class="modal-backdrop" id="closeImageModal" aria-label="关闭图片预览"></button>
+      <figure class="modal-card">
+        <img id="modalImage" alt="" />
+        <figcaption id="modalCaption"></figcaption>
+      </figure>
     </div>
 
     <script src="data.js"></script>

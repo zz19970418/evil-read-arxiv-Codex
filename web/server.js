@@ -132,12 +132,28 @@ function mediaFiles(folder) {
   const pdf = walk(folder).find((file) => /\.pdf$/i.test(file));
   return {
     images,
+    imageCount: images.length,
     localPdf: pdf ? {
       name: path.basename(pdf),
       path: path.relative(VAULT_ROOT, pdf).replace(/\\/g, "/"),
       url: fileUrl(pdf),
     } : null,
   };
+}
+
+function mtimeIso(file) {
+  try {
+    return fs.statSync(file).mtime.toISOString();
+  } catch {
+    return "";
+  }
+}
+
+function pathDate(fileOrFolder) {
+  const normalized = fileOrFolder.replace(/\\/g, "/");
+  return normalized.match(/20_Research\/Papers\/(\d{4}-\d{2}-\d{2})/)?.[1]
+    || normalized.match(/30_confpapers\/(\d{4}-\d{2}-\d{2})/)?.[1]
+    || "";
 }
 
 function confAnalysisIndex() {
@@ -151,7 +167,10 @@ function confAnalysisIndex() {
       path: path.relative(VAULT_ROOT, noteFile).replace(/\\/g, "/"),
       folder: path.relative(VAULT_ROOT, path.dirname(metaFile)).replace(/\\/g, "/"),
       images: media.images,
+      imageCount: media.imageCount,
       localPdf: media.localPdf,
+      modifiedAt: mtimeIso(noteFile),
+      date: pathDate(noteFile),
     });
   }
   return index;
@@ -180,7 +199,11 @@ function fromPaperNote(file) {
     matchedKeywords: [],
     summary: summary || "本地论文笔记，点击查看详情。",
     path: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+    folder: path.relative(VAULT_ROOT, path.dirname(file)).replace(/\\/g, "/"),
+    date: pathDate(file),
+    modifiedAt: mtimeIso(file),
     images: media.images,
+    imageCount: media.imageCount,
     localPdf: media.localPdf,
   };
 }
@@ -210,7 +233,11 @@ function loadPapers() {
         analysisPath: analysis?.path || null,
         analysisFolder: analysis?.folder || null,
         images: analysis?.images || [],
+        imageCount: analysis?.imageCount || analysis?.images?.length || 0,
         localPdf: analysis?.localPdf || null,
+        folder: analysis?.folder || "",
+        date: analysis?.date || pathDate(runFile || ""),
+        modifiedAt: analysis?.modifiedAt || mtimeIso(runFile || ""),
       });
     }
   }
@@ -245,11 +272,13 @@ function inferChineseSummary(paper) {
 function loadStats() {
   const conf = latestRunStatus();
   const confData = conf ? safeReadJson(conf, {}) : {};
+  const { papers } = loadPapers();
   return {
     confCandidates: confData.status?.totalDblp ?? 0,
     confFiltered: confData.status?.filtered ?? 0,
     confRateLimited: Boolean(confData.status?.s2RateLimited),
     localNotes: paperNoteFiles().length,
+    totalImages: papers.reduce((sum, paper) => sum + (paper.imageCount || paper.images?.length || 0), 0),
     latestDailyNote: latestDailyNote() ? path.relative(VAULT_ROOT, latestDailyNote()).replace(/\\/g, "/") : null,
     latestConfRun: conf ? path.relative(VAULT_ROOT, conf).replace(/\\/g, "/") : null,
   };
