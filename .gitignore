@@ -1,0 +1,26 @@
+# Runtime caches
+**/.cache/
+**/__pycache__/
+*.py[cod]
+
+# Logs and local process output
+*.log
+web/server-runtime.log
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*secret*
+*token*
+*credential*
+
+# Node / frontend build artifacts
+node_modules/
+.next/
+dist/
+build/
+
+# Obsidian local workspace state
+.obsidian/workspace.json
+

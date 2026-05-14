@@ -1,0 +1,45 @@
+{
+  "notes": [
+    {
+      "path": "20_Research/Papers/2026-05-14/01-OphMAE/OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis.md",
+      "filename": "OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis.md",
+      "short_name": "OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis",
+      "path_str": "20_Research\\Papers\\2026-05-14\\01-OphMAE\\OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis.md",
+      "title": "OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis",
+      "tags": [
+        "paper-analysis",
+        "llm-generated",
+        "ophthalmology",
+        "OCT"
+      ],
+      "title_keywords": [],
+      "tag_keywords": [
+        "paper-analysis",
+        "llm-generated",
+        "ophthalmology",
+        "OCT"
+      ]
+    },
+    {
+      "path": "20_Research/Papers/2026-05-14/02-FOCUS/FOCUS_Full_end-to-end_diagnostic_workflow_automation_of_3D_OCT_via_foundation_model-driven_AI_for_retinal_diseases.md",
+      "filename": "FOCUS_Full_end-to-end_diagnostic_workflow_automation_of_3D_OCT_via_foundation_model-driven_AI_for_retinal_diseases.md",
+      "short_name": "FOCUS_Full_end-to-end_diagnostic_workflow_automation_of_3D_OCT_via_foundation_model-driven_AI_for_retinal_diseases",
+      "path_str": "20_Research\\Papers\\2026-05-14\\02-FOCUS\\FOCUS_Full_end-to-end_diagnostic_workflow_automation_of_3D_OCT_via_foundation_model-driven_AI_for_retinal_diseases.md",
+      "title": "FOCUS_Full_end-to-end_diagnostic_workflow_automation_of_3D_OCT_via_foundation_model-driven_AI_for_retinal_diseases",
+      "tags": [],
+      "title_keywords": [],
+      "tag_keywords": []
+    },
+    {
+      "path": "20_Research/Papers/2026-05-14/03-MIRAGE/MIRAGE_Multimodal_foundation_model_and_benchmark_for_comprehensive_retinal_OCT_image_analysis.md",
+      "filename": "MIRAGE_Multimodal_foundation_model_and_benchmark_for_comprehensive_retinal_OCT_image_analysis.md",
+      "short_name": "MIRAGE_Multimodal_foundation_model_and_benchmark_for_comprehensive_retinal_OCT_image_analysis",
+      "path_str": "20_Research\\Papers\\2026-05-14\\03-MIRAGE\\MIRAGE_Multimodal_foundation_model_and_benchmark_for_comprehensive_retinal_OCT_image_analysis.md",
+      "title": "MIRAGE_Multimodal_foundation_model_and_benchmark_for_comprehensive_retinal_OCT_image_analysis",
+      "tags": [],
+      "title_keywords": [],
+      "tag_keywords": []
+    }
+  ],
+  "keyword_to_notes": {}
+}

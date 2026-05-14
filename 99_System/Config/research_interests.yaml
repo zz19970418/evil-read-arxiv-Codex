@@ -1,0 +1,125 @@
+language: "zh"
+
+# Optional. Add a Semantic Scholar API key here to improve rate limits.
+semantic_scholar_api_key: null
+
+research_domains:
+  ophthalmic-biometry:
+    keywords:
+      - "ocular biometry"
+      - "ophthalmic biometry"
+      - "biometry measurement"
+      - "axial length"
+      - "corneal curvature"
+      - "keratometry"
+      - "anterior chamber depth"
+      - "lens thickness"
+      - "pachymetry"
+      - "intraocular lens calculation"
+      - "IOL power calculation"
+      - "cataract biometry"
+    arxiv_categories:
+      - "eess.IV"
+      - "cs.CV"
+      - "cs.AI"
+      - "cs.LG"
+    priority: 5
+
+  optical-coherence-tomography:
+    keywords:
+      - "optical coherence tomography"
+      - "OCT"
+      - "OCT angiography"
+      - "OCTA"
+      - "retinal OCT"
+      - "anterior segment OCT"
+      - "swept-source OCT"
+      - "spectral-domain OCT"
+      - "retinal layer segmentation"
+      - "choroidal thickness"
+      - "macular thickness"
+      - "optic nerve head"
+    arxiv_categories:
+      - "eess.IV"
+      - "cs.CV"
+      - "physics.optics"
+      - "cs.AI"
+      - "cs.LG"
+    priority: 5
+
+  optometry-and-refraction:
+    keywords:
+      - "optometry"
+      - "autorefractor"
+      - "auto refraction"
+      - "objective refraction"
+      - "subjective refraction"
+      - "wavefront aberrometry"
+      - "refractive error"
+      - "myopia"
+      - "astigmatism"
+      - "accommodation"
+      - "visual acuity"
+      - "phoropter"
+    arxiv_categories:
+      - "eess.IV"
+      - "cs.CV"
+      - "cs.AI"
+      - "cs.LG"
+    priority: 5
+
+  ai-ophthalmology:
+    keywords:
+      - "artificial intelligence ophthalmology"
+      - "AI ophthalmology"
+      - "deep learning ophthalmology"
+      - "retinal image analysis"
+      - "fundus image"
+      - "diabetic retinopathy"
+      - "glaucoma detection"
+      - "macular degeneration"
+      - "myopia progression"
+      - "medical image segmentation"
+      - "medical image classification"
+      - "computer-aided diagnosis"
+    arxiv_categories:
+      - "cs.CV"
+      - "cs.AI"
+      - "cs.LG"
+      - "eess.IV"
+    priority: 5
+
+  ophthalmic-instruments-and-sensors:
+    keywords:
+      - "ophthalmic instrument"
+      - "ophthalmic device"
+      - "biomedical sensor"
+      - "optical measurement"
+      - "non-contact measurement"
+      - "interferometry"
+      - "low-coherence interferometry"
+      - "Scheimpflug imaging"
+      - "corneal topography"
+      - "ocular surface imaging"
+      - "portable ophthalmic device"
+      - "point-of-care ophthalmology"
+    arxiv_categories:
+      - "physics.optics"
+      - "eess.IV"
+      - "cs.CV"
+      - "cs.AI"
+    priority: 4
+
+excluded_keywords:
+  - "survey"
+  - "review"
+  - "tutorial"
+  - "workshop"
+  - "competition"
+  - "challenge report"
+  - "benchmark report"
+  - "call for papers"
+  - "editorial"
+  - "erratum"
+  - "animal study"
+  - "veterinary"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Analyze"
+  short_description: "Deeply analyze one paper, extract figures, and update Obsidian links."
+  default_prompt: "Use $paper-analyze to create a detailed Chinese analysis note for this paper."

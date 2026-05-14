@@ -1,0 +1,19 @@
+{
+  "target_date": "2026-05-14",
+  "status": "rate_limited",
+  "rate_limited": true,
+  "date_windows": {
+    "recent_30d": {
+      "start": "2026-04-14",
+      "end": "2026-05-14"
+    },
+    "past_year": {
+      "start": "2025-05-14",
+      "end": "2026-04-13"
+    }
+  },
+  "total_recent": 0,
+  "total_hot": 0,
+  "total_unique": 0,
+  "top_papers": []
+}

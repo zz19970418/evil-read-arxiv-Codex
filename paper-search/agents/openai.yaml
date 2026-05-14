@@ -1,0 +1,4 @@
+interface:
+  display_name: "Paper Search"
+  short_description: "Search local paper notes and rank results by relevance."
+  default_prompt: "Use $paper-search to find related papers in this Obsidian vault."

@@ -1,0 +1,101 @@
+language: "zh"
+
+# Optional. Add a Semantic Scholar API key to improve rate limits.
+semantic_scholar_api_key: null
+
+default_years:
+  - 2026
+  - 2025
+
+default_conferences:
+  - CVPR
+  - ICCV
+  - ECCV
+  - ICLR
+  - AAAI
+  - NeurIPS
+  - ICML
+
+conference_venues:
+  CVPR:
+    dblp_key: "conf/cvpr"
+    quality_weight: 1.00
+  ICCV:
+    dblp_key: "conf/iccv"
+    quality_weight: 1.00
+  ECCV:
+    dblp_key: "conf/eccv"
+    quality_weight: 0.98
+  ICLR:
+    dblp_key: "conf/iclr"
+    quality_weight: 1.00
+  NeurIPS:
+    dblp_key: "conf/nips"
+    quality_weight: 1.00
+  ICML:
+    dblp_key: "conf/icml"
+    quality_weight: 1.00
+  AAAI:
+    dblp_key: "conf/aaai"
+    quality_weight: 0.92
+
+keywords:
+  - "optical coherence tomography"
+  - "OCT"
+  - "OCTA"
+  - "retinal OCT"
+  - "ophthalmology"
+  - "ophthalmic AI"
+  - "retinal image"
+  - "fundus image"
+  - "medical image segmentation"
+  - "medical image classification"
+  - "vision-language model"
+  - "foundation model"
+  - "multimodal learning"
+  - "self-supervised learning"
+  - "domain adaptation"
+  - "anomaly detection"
+  - "ocular biometry"
+  - "axial length"
+  - "keratometry"
+  - "IOL power calculation"
+  - "optometry"
+  - "refraction"
+  - "autorefractor"
+  - "myopia"
+  - "optical measurement"
+  - "interferometry"
+  - "biomedical sensor"
+  - "ophthalmic device"
+
+exclude_keywords:
+  - "survey"
+  - "review"
+  - "tutorial"
+  - "workshop"
+  - "competition"
+  - "challenge report"
+  - "benchmark report"
+  - "call for papers"
+  - "editorial"
+  - "erratum"
+  - "poster abstract"
+
+scoring:
+  relevance_weight: 0.40
+  popularity_weight: 0.40
+  quality_weight: 0.20
+
+limits:
+  max_dblp_results_per_conference: 300
+  max_s2_requests: 60
+  s2_interval_seconds: 12
+  top_n: 10
+  analyze_top_n: 3
+
+output:
+  root: "30_confpapers"
+  recommendation_filename: "conference-paper-recommendations.md"
+  keep_pdf: true
+  extract_images: true

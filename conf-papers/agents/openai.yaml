@@ -1,0 +1,4 @@
+interface:
+  display_name: "Conf Papers"
+  short_description: "Recommend top-conference papers from DBLP and Semantic Scholar."
+  default_prompt: "Use $conf-papers to search and recommend recent top-conference papers."

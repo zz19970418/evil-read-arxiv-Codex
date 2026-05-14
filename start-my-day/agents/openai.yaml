@@ -1,0 +1,4 @@
+interface:
+  display_name: "Start My Day"
+  short_description: "Generate a daily arXiv paper recommendation note for an Obsidian vault."
+  default_prompt: "Use $start-my-day to create today's paper recommendation note in this Obsidian vault."

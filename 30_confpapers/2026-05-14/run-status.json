@@ -1,0 +1,399 @@
+{
+  "status": {
+    "totalDblp": 2871,
+    "filtered": 175,
+    "s2Requests": 1,
+    "s2RateLimited": true,
+    "missingVenues": []
+  },
+  "recommendationFile": "D:\\newzz\\note\\Valut\\evil-read-arxiv\\30_confpapers\\2026-05-14\\conference-paper-recommendations.md",
+  "detailFolders": [
+    "D:\\newzz\\note\\Valut\\evil-read-arxiv\\30_confpapers\\2026-05-14\\01-MuTri-Multi-view-Tri-alignment-for-OCT-to-OCTA-3",
+    "D:\\newzz\\note\\Valut\\evil-read-arxiv\\30_confpapers\\2026-05-14\\02-Blood-Flow-Speed-Estimation-with-Optical-Coheren",
+    "D:\\newzz\\note\\Valut\\evil-read-arxiv\\30_confpapers\\2026-05-14\\03-BIOMEDICA-An-Open-Biomedical-Image-Caption-Archi"
+  ],
+  "topPapers": [
+    {
+      "title": "MuTri: Multi-view Tri-alignment for OCT to OCTA 3D Image Translation",
+      "authors": [
+        "Zhuangzhuang Chen",
+        "Hualiang Wang",
+        "Chubin Ou",
+        "Xiaomeng Li 0001"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ChenWO025",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.01945"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01945",
+      "matchedTitleKeywords": [
+        "OCT",
+        "OCTA"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 50,
+      "abstract": "Optical coherence tomography angiography (OCTA) shows its great importance in imaging microvascular networks by providing accurate 3D imaging of blood vessels, but it relies upon specialized sensors and expensive devices. For this reason, previous works show the potential to translate the readily available 3D Optical Coherence Tomography (OCT) images into 3D OCTA images. However, existing OCTA translation methods directly learn the mapping from the OCT domain to the OCTA domain in continuous and infinite space with guidance from only a single view, i.e., the OCTA project map, resulting in suboptimal results. To this end, we propose the multi-view Tri-alignment framework for OCT to OCTA 3D image translation in discrete and finite space, named MuTri. In the first stage, we pre-train two vector-quantized variational auto-encoder (VQVAE) by reconstructing 3D OCT and 3D OCTA data, providing semantic prior for subsequent multi-view guidances. In the second stage, our multi-view tri-alignment facilitates another VQVAE model to learn the mapping from the OCT domain to the OCTA domain in discrete and finite space. Specifically, a contrastive-inspired semantic alignment is proposed to maximize the mutual information with the pre-trained models from OCT and OCTA views, to facilitate codebook learning. Meanwhile, a vessel structure alignment is proposed to minimize the structure discrepancy with the pre-trained models from the OCTA project map view, benefiting from learning the detailed vessel structure information. We also collect the first large-scale dataset, namely, OCTA2024, which contains a pair of OCT and OCTA volumes from 846 subjects. Our codes and datasets are available at: https://github.com/xmed-lab/MuTri.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 34,
+        "popularity": 0,
+        "quality": 20,
+        "total": 54,
+        "matchedKeywords": [
+          "OCT",
+          "OCTA",
+          "optical coherence tomography"
+        ]
+      }
+    },
+    {
+      "title": "Blood Flow Speed Estimation with Optical Coherence Tomography Angiography Images",
+      "authors": [
+        "Wensheng Cheng",
+        "Zhenghong Li",
+        "Jiaxiang Ren 0002",
+        "Hyomin Jeong",
+        "Congwu Du",
+        "Yingtian Pan",
+        "Haibin Ling"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ChengL0JDPL25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.00979"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00979",
+      "matchedTitleKeywords": [
+        "optical coherence tomography"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 36,
+      "abstract": "Estimating blood flow speed is essential in many medical and physiological applications, yet it is extremely challenging due to complex vascular structure and flow dynamics, particularly for cerebral cortex regions. Existing techniques, such as Optical Doppler Tomography (ODT), generally require complex hardware control and signal processing, and still suffer from inherent system-level artifacts. To address these challenges, we propose a new learning-based approach named OCTA-Flow, which directly estimates vascular blood flow speed from Optical Coherence Tomography Angiography (OCTA) images that are commonly used for vascular structure analysis. OCTA-Flow employs several novel components to achieve this goal. First, using an encoder-decoder architecture, OCTA-Flow leverages ODT data as pseudo labels during training, thus bypassing the difficulty of collecting ground truth data. Second, to capture the relationship between vessels of varying scales and their flow speed, we design an Adaptive Window Fusion module that employs multiscale window attention. Third, to mitigate ODT artifacts, we incorporate a Conditional Random Field Decoder that promotes smoothness and consistency in the estimated blood flow. Together, these innovations enable OCTA-Flow to effectively produce accurate flow estimation, suppress the artifacts in ODT, and enhance practicality, benefiting from the established techniques of OCTA data acquisition. The code and data are available at https://github.com/Spritea/OCTA-Flow.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 20,
+        "popularity": 0,
+        "quality": 20,
+        "total": 40,
+        "matchedKeywords": [
+          "optical coherence tomography",
+          "OCTA"
+        ]
+      }
+    },
+    {
+      "title": "BIOMEDICA: An Open Biomedical Image-Caption Archive, Dataset, and Vision-Language Models Derived from Scientific Literature",
+      "authors": [
+        "Alejandro Lozano",
+        "Min Woo Sun",
+        "James Burgess",
+        "Liangyu Chen 0005",
+        "Jeffrey J. Nirschl",
+        "Jeffrey Gu",
+        "Ivan Lopez 0001",
+        "Josiah Aklilu",
+        "Anita Rau",
+        "Austin Wolfgang Katzer",
+        "Yuhui Zhang",
+        "Collin Chiu",
+        "Xiaohan Wang",
+        "Alfred Seunghoon Song",
+        "Robert Tibshirani",
+        "Serena Yeung-Levy"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#LozanoSB0NGLARK25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Lozano_BIOMEDICA_An_Open_Biomedical_Image-Caption_Archive_Dataset_and_Vision-Language_Models_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.01837"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Lozano_BIOMEDICA_An_Open_Biomedical_Image-Caption_Archive_Dataset_and_Vision-Language_Models_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01837",
+      "matchedTitleKeywords": [
+        "vision-language model"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 28,
+      "abstract": "The development of vision-language models (VLMs) is driven by large-scale and diverse multi-modal datasets. However, progress toward generalist biomedical VLMs is limited by the lack of annotated, publicly accessible datasets across biology and medicine. Existing efforts are limited to narrow domains, missing the opportunity to leverage the full diversity of biomedical knowledge encoded in scientific literature. To address this gap, we introduce BIOMEDICA: a scalable, open-source framework to extract, annotate, and serialize the entirety of the PubMed Central Open Access subset into an easy-to-use, publicly accessible dataset. Our framework produces a comprehensive archive with over 24 million unique image-text pairs from over 6 million articles. Metadata and expert-guided annotations are additionally provided. We demonstrate the utility and accessibility of our resource by releasing BMC-CLIP, a suite of CLIP-style models continuously pre-trained on BIOMEDICA dataset via streaming (eliminating the need to download 27 TB of data locally). On average, our models achieve state-of-the-art performance across 40 tasks -- spanning pathology, radiology, ophthalmology, dermatology, surgery, molecular biology, parasitology, and cell biology -- excelling in zero-shot classification with 6.56% average improvement (as high as 29.8% and 17.5% gains in dermatology and ophthalmology, respectively) and stronger image-text retrieval while using 10x less compute. To foster reproducibility and collaboration, we release our codebase and dataset to the broader research community",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Lozano_BIOMEDICA_An_Open_Biomedical_Image-Caption_Archive_Dataset_and_Vision-Language_Models_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 20,
+        "popularity": 0,
+        "quality": 20,
+        "total": 40,
+        "matchedKeywords": [
+          "vision-language model",
+          "ophthalmology"
+        ]
+      }
+    },
+    {
+      "title": "VERA: Explainable Video Anomaly Detection via Verbalized Learning of Vision-Language Models",
+      "authors": [
+        "Muchao Ye",
+        "Weiyang Liu",
+        "Pan He"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#YeLH25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Ye_VERA_Explainable_Video_Anomaly_Detection_via_Verbalized_Learning_of_Vision-Language_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.00811"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Ye_VERA_Explainable_Video_Anomaly_Detection_via_Verbalized_Learning_of_Vision-Language_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00811",
+      "matchedTitleKeywords": [
+        "vision-language model",
+        "anomaly detection"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 36,
+      "abstract": "The rapid advancement of vision-language models (VLMs) has established a new paradigm in video anomaly detection (VAD): leveraging VLMs to simultaneously detect anomalies and provide comprehendible explanations for the decisions. Existing work in this direction often assumes the complex reasoning required for VAD exceeds the capabilities of pretrained VLMs. Consequently, these approaches either incorporate specialized reasoning modules during inference or rely on instruction tuning datasets through additional training to adapt VLMs for VAD. However, such strategies often incur substantial computational costs or data annotation overhead. To address these challenges in explainable VAD, we introduce a verbalized learning framework named VERA that enables VLMs to perform VAD without model parameter modifications. Specifically, VERA automatically decomposes the complex reasoning required for VAD into reflections on simpler, more focused guiding questions capturing distinct abnormal patterns. It treats these reflective questions as learnable parameters and optimizes them through data-driven verbal interactions between learner and optimizer VLMs, using coarsely labeled training data. During inference, VERA embeds the learned questions into model prompts to guide VLMs in generating segment-level anomaly scores, which are then refined into frame-level scores via the fusion of scene and temporal contexts. Experimental results on challenging benchmarks demonstrate that the learned questions of VERA are highly adaptable, significantly improving both detection performance and explainability of VLMs for VAD.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Ye_VERA_Explainable_Video_Anomaly_Detection_via_Verbalized_Learning_of_Vision-Language_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 16,
+        "popularity": 0,
+        "quality": 20,
+        "total": 36,
+        "matchedKeywords": [
+          "vision-language model",
+          "anomaly detection"
+        ]
+      }
+    },
+    {
+      "title": "Towards Training-free Anomaly Detection with Vision and Language Foundation Models",
+      "authors": [
+        "Jinjin Zhang",
+        "Guodong Wang 0006",
+        "Yizhou Jin",
+        "Di Huang 0001"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ZhangWJ025",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Towards_Training-free_Anomaly_Detection_with_Vision_and_Language_Foundation_Models_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.01416"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Towards_Training-free_Anomaly_Detection_with_Vision_and_Language_Foundation_Models_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01416",
+      "matchedTitleKeywords": [
+        "foundation model",
+        "anomaly detection"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 36,
+      "abstract": "Anomaly detection is valuable for real-world applications, such as industrial quality inspection. However, most approaches focus on detecting local structural anomalies while neglecting compositional anomalies incorporating logical constraints. In this paper, we introduce LogSAD, a novel multi-modal framework that requires no training for both Logical and Structural Anomaly Detection. First, we propose a match-of-thought architecture that employs advanced large multi-modal models (i.e. GPT-4V) to generate matching proposals, formulating interests and compositional rules of thought for anomaly detection. Second, we elaborate on multi-granularity anomaly detection, consisting of patch tokens, sets of interests, and composition matching with vision and language foundation models. Subsequently, we present a calibration module to align anomaly scores from different detectors, followed by integration strategies for the final decision. Consequently, our approach addresses both logical and structural anomaly detection within a unified framework and achieves state-of-the-art results without the need for training, even when compared to supervised approaches, highlighting its robustness and effectiveness. Code is available at https://github.com/zhang0jhon/LogSAD.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Zhang_Towards_Training-free_Anomaly_Detection_with_Vision_and_Language_Foundation_Models_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 16,
+        "popularity": 0,
+        "quality": 20,
+        "total": 36,
+        "matchedKeywords": [
+          "foundation model",
+          "anomaly detection"
+        ]
+      }
+    },
+    {
+      "title": "Dinomaly: The Less Is More Philosophy in Multi-Class Unsupervised Anomaly Detection",
+      "authors": [
+        "Jia Guo",
+        "Shuai Lu 0003",
+        "Weihang Zhang",
+        "Fang Chen 0007",
+        "Huiqi Li",
+        "Hongen Liao"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#Guo0ZCLL25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Guo_Dinomaly_The_Less_Is_More_Philosophy_in_Multi-Class_Unsupervised_Anomaly_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.01900"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Guo_Dinomaly_The_Less_Is_More_Philosophy_in_Multi-Class_Unsupervised_Anomaly_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01900",
+      "matchedTitleKeywords": [
+        "anomaly detection"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 36,
+      "abstract": "Recent studies highlighted a practical setting of unsupervised anomaly detection (UAD) that builds a unified model for multi-class images. Despite various advancements addressing this challenging task, the detection performance under the multi-class setting still lags far behind state-of-the-art class-separated models. Our research aims to bridge this substantial performance gap. In this paper, we present Dinomaly, a minimalist reconstruction-based anomaly detection framework that harnesses pure Transformer architectures without relying on complex designs, additional modules, or specialized tricks. Given this powerful framework consisting of only Attentions and MLPs, we found four simple components that are essential to multi-class anomaly detection: (1) Scalable foundation Transformers that extracts universal and discriminative features, (2) Noisy Bottleneck where pre-existing Dropouts do all the noise injection tricks, (3) Linear Attention that naturally cannot focus, and (4) Loose Reconstruction that does not force layer-to-layer and point-by-point reconstruction. Extensive experiments are conducted across popular anomaly detection benchmarks including MVTec-AD, VisA, and Real-IAD. Our proposed Dinomaly achieves impressive image-level AUROC of 99.6%, 98.7%, and 89.3% on the three datasets respectively, which is not only superior to state-of-the-art multi-class UAD methods, but also achieves the most advanced class-separated UAD records.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Guo_Dinomaly_The_Less_Is_More_Philosophy_in_Multi-Class_Unsupervised_Anomaly_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 16,
+        "popularity": 0,
+        "quality": 20,
+        "total": 36,
+        "matchedKeywords": [
+          "anomaly detection"
+        ]
+      }
+    },
+    {
+      "title": "Steady Progress Beats Stagnation: Mutual Aid of Foundation and Conventional Models in Mixed Domain Semi-Supervised Medical Image Segmentation",
+      "authors": [
+        "Qinghe Ma",
+        "Jian Zhang 0090",
+        "Zekun Li 0010",
+        "Lei Qi 0001",
+        "Qian Yu 0007",
+        "Yinghuan Shi"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#Ma000YS25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Ma_Steady_Progress_Beats_Stagnation_Mutual_Aid_of_Foundation_and_Conventional_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.00488"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Ma_Steady_Progress_Beats_Stagnation_Mutual_Aid_of_Foundation_and_Conventional_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00488",
+      "matchedTitleKeywords": [
+        "medical image segmentation"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 28,
+      "abstract": "Large pretrained visual foundation models exhibit impressive general capabilities. However, the extensive prior knowledge inherent in these models can sometimes be a double-edged sword when adapting them to downstream tasks in specific domains.In the context of semi-supervised medical image segmentation with domain shift, foundation models like MedSAM tend to make overconfident predictions, some of which are incorrect. The error accumulation hinders the effective utilization of unlabeled data and limits further improvements.In this paper, we introduce a Synergistic training framework for Foundation and Conventional models (SynFoC) to address the issue. We observe that a conventional model trained from scratch has the ability to correct the high-confidence mispredictions of the foundation model, while the foundation model can supervise it with high-quality pseudo-labels in the early training stages. Furthermore, to enhance the collaborative training effectiveness of both models and promote reliable convergence towards optimization, the consensus-divergence consistency regularization is proposed. We demonstrate the superiority of our method across four public multi-domain datasets. In particular, our method improves the Dice score by 10.31% on the Prostate dataset. Our code is available in the supplementary material.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Ma_Steady_Progress_Beats_Stagnation_Mutual_Aid_of_Foundation_and_Conventional_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 12,
+        "popularity": 0,
+        "quality": 20,
+        "total": 32,
+        "matchedKeywords": [
+          "medical image segmentation",
+          "foundation model"
+        ]
+      }
+    },
+    {
+      "title": "Revisiting MAE Pre-training for 3D Medical Image Segmentation",
+      "authors": [
+        "Tassilo Wald",
+        "Constantin Ulrich",
+        "Stanislav Lukyanenko",
+        "Andrei Goncharov",
+        "Alberto Paderno",
+        "Maximilian Miller",
+        "Leander Maerkisch",
+        "Paul F. Jaeger",
+        "Klaus H. Maier-Hein"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#WaldULGPMMJM25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Wald_Revisiting_MAE_Pre-training_for_3D_Medical_Image_Segmentation_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.00489"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Wald_Revisiting_MAE_Pre-training_for_3D_Medical_Image_Segmentation_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00489",
+      "matchedTitleKeywords": [
+        "medical image segmentation"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 28,
+      "abstract": "Self-Supervised Learning (SSL) presents an exciting opportunity to unlock the potential of vast, untapped clinical datasets, for various downstream applications that suffer from the scarcity of labeled data. While SSL has revolutionized fields like natural language processing and computer vision, its adoption in 3D medical image computing has been limited by three key pitfalls: Small pre-training dataset sizes, architectures inadequate for 3D medical image analysis, and insufficient evaluation practices. In this paper, we address these issues by i) leveraging a large-scale dataset of 39k 3D brain MRI volumes and ii) using a Residual Encoder U-Net architecture within the state-of-the-art nnU-Net framework. iii) A robust development framework, incorporating 5 development and 8 testing brain MRI segmentation datasets, allowed performance-driven design decisions to optimize the simple concept of Masked Auto En- coders (MAEs) for 3D CNNs. The resulting model not only surpasses previous SSL methods but also outperforms the strong nnU-Net baseline by an average of approximately 3 Dice points setting a new state-of-the-art. Our code and models are made available here.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Wald_Revisiting_MAE_Pre-training_for_3D_Medical_Image_Segmentation_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 12,
+        "popularity": 0,
+        "quality": 20,
+        "total": 32,
+        "matchedKeywords": [
+          "medical image segmentation",
+          "self-supervised learning"
+        ]
+      }
+    },
+    {
+      "title": "SemiDAViL: Semi-supervised Domain Adaptation with Vision-Language Guidance for Semantic Segmentation",
+      "authors": [
+        "Hritam Basak",
+        "Zhaozheng Yin"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#BasakY25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Basak_SemiDAViL_Semi-supervised_Domain_Adaptation_with_Vision-Language_Guidance_for_Semantic_Segmentation_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.00917"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Basak_SemiDAViL_Semi-supervised_Domain_Adaptation_with_Vision-Language_Guidance_for_Semantic_Segmentation_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00917",
+      "matchedTitleKeywords": [
+        "domain adaptation"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 28,
+      "abstract": "Domain Adaptation (DA) and Semi-supervised Learning (SSL) converge in Semi-supervised Domain Adaptation (SSDA), where the objective is to transfer knowledge from a source domain to a target domain using a combination of limited labeled target samples and abundant unlabeled target data. Although intuitive, a simple amalgamation of DA and SSL is suboptimal in semantic segmentation due to two major reasons: (1) previous methods, while able to learn good segmentation boundaries, are prone to confuse classes with similar visual appearance due to limited supervision; and (2) skewed and imbalanced training data distribution preferring source representation learning whereas impeding from exploring limited information about tailed classes. Language guidance can serve as a pivotal semantic bridge, facilitating robust class discrimination and mitigating visual ambiguities by leveraging the rich semantic relationships encoded in pre-trained language models to enhance feature representations across domains. Therefore, we propose the first language-guided SSDA setting for semantic segmentation in this work. Specifically, we harness the semantic generalization capabilities inherent in vision-language models (VLMs) to establish a synergistic framework within the SSDA paradigm. To address the inherent class-imbalance challenges in long-tailed distributions, we introduce class-balanced segmentation loss formulations that effectively regularize the learning process. Through extensive experimentation across diverse domain adaptation scenarios, our approach demonstrates substantial performance improvements over contemporary state-of-the-art (SoTA) methodologies.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Basak_SemiDAViL_Semi-supervised_Domain_Adaptation_with_Vision-Language_Guidance_for_Semantic_Segmentation_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 12,
+        "popularity": 0,
+        "quality": 20,
+        "total": 32,
+        "matchedKeywords": [
+          "domain adaptation",
+          "vision-language model"
+        ]
+      }
+    },
+    {
+      "title": "Mamba as a Bridge: Where Vision Foundation Models Meet Vision Language Models for Domain-Generalized Semantic Segmentation",
+      "authors": [
+        "Xin Zhang",
+        "Robby T. Tan"
+      ],
+      "year": 2025,
+      "conference": "CVPR",
+      "venue": "CVPR 2025",
+      "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ZhangT25",
+      "links": [
+        "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Mamba_as_a_Bridge_Where_Vision_Foundation_Models_Meet_Vision_CVPR_2025_paper.html",
+        "https://doi.org/10.1109/CVPR52734.2025.01354"
+      ],
+      "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Zhang_Mamba_as_a_Bridge_Where_Vision_Foundation_Models_Meet_Vision_CVPR_2025_paper.html",
+      "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01354",
+      "matchedTitleKeywords": [
+        "foundation model"
+      ],
+      "excludedKeywords": [],
+      "roughScore": 28,
+      "abstract": "Vision Foundation Models (VFMs) and Vision-Language Models (VLMs) have gained traction in Domain Generalized Semantic Segmentation (DGSS) due to their strong generalization capabilities. However, existing DGSS methods often rely exclusively on either VFMs or VLMs, overlooking their complementary strengths. VFMs (e.g., DINOv2) excel at capturing fine-grained features, while VLMs (e.g., CLIP) provide robust text alignment but struggle with coarse granularity. Despite their complementary strengths, effectively integrating VFMs and VLMs with attention mechanisms is challenging, as the increased patch tokens complicate long-sequence modeling. To address this, we propose MFuser, a novel Mamba-based fusion framework that efficiently combines the strengths of VFMs and VLMs while maintaining linear scalability in sequence length. MFuser consists of two key components: MVFuser, which acts as a co-adapter to jointly fine-tune the two models by capturing both sequential and spatial dynamics; and MTEnhancer, a hybrid attention-Mamba module that refines text embeddings by incorporating image priors. Our approach achieves precise feature locality and strong text alignment without incurring significant computational overhead. Extensive experiments demonstrate that MFuser significantly outperforms state-of-the-art DGSS methods, achieving 68.20 mIoU on synthetic-to-real and 71.87 mIoU on real-to-real benchmarks. The code is available at https://github.com/devinxzhang/MFuser.",
+      "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Zhang_Mamba_as_a_Bridge_Where_Vision_Foundation_Models_Meet_Vision_CVPR_2025_paper.pdf",
+      "score": {
+        "relevance": 12,
+        "popularity": 0,
+        "quality": 20,
+        "total": 32,
+        "matchedKeywords": [
+          "foundation model",
+          "vision-language model"
+        ]
+      }
+    }
+  ]
+}
