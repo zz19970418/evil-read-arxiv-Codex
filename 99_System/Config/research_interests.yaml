@@ -3,6 +3,10 @@ language: "zh"
 # Optional. Add a Semantic Scholar API key here to improve rate limits.
 semantic_scholar_api_key: null
 
+# Optional. Add your email for Unpaywall open-access PDF lookup.
+# Example: unpaywall_email: "you@example.com"
+unpaywall_email: "245578847@qq.com"
+
 research_domains:
   ophthalmic-biometry:
     keywords:

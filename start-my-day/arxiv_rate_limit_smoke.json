@@ -1,15 +1,15 @@
 {
-  "target_date": "2026-05-14",
+  "target_date": "2026-05-15",
   "status": "rate_limited",
   "rate_limited": true,
   "date_windows": {
     "recent_30d": {
-      "start": "2026-04-14",
-      "end": "2026-05-14"
+      "start": "2026-04-15",
+      "end": "2026-05-15"
     },
     "past_year": {
-      "start": "2025-05-14",
-      "end": "2026-04-13"
+      "start": "2025-05-15",
+      "end": "2026-04-14"
     }
   },
   "total_recent": 0,

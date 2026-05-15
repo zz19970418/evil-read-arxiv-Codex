@@ -38,14 +38,25 @@ function latestRunStatus() {
   return files[0] || null;
 }
 
+function latestDailyNote() {
+  const files = walk(path.join(VAULT_ROOT, "10_Daily"))
+    .filter((file) => file.endsWith(".md") && !file.endsWith("_linked.md"))
+    .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
+  return files[0] || null;
+}
+
 function paperNoteFiles() {
   return walk(path.join(VAULT_ROOT, "20_Research", "Papers"))
     .filter((file) => file.endsWith(".md") && path.basename(file) !== "image-index.md")
     .sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs);
 }
 
+function vaultRelative(file) {
+  return path.relative(VAULT_ROOT, file).replace(/\\/g, "/");
+}
+
 function fileUrl(file) {
-  return `file:///${file.replace(/\\/g, "/").replace(/^([A-Za-z]):/, "$1:")}`;
+  return `/api/file?path=${encodeURIComponent(vaultRelative(file))}`;
 }
 
 function mediaFiles(folder) {
@@ -69,8 +80,9 @@ function mediaFiles(folder) {
     .slice(0, 24)
     .map((file) => ({
       name: path.basename(file),
-      path: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+      path: vaultRelative(file),
       url: fileUrl(file),
+      fileUrl: `file:///${file.replace(/\\/g, "/").replace(/^([A-Za-z]):/, "$1:")}`,
       sourceDir: path.basename(path.dirname(file)),
     }));
   const pdf = walk(folder).find((file) => /\.pdf$/i.test(file));
@@ -79,8 +91,9 @@ function mediaFiles(folder) {
     imageCount: images.length,
     localPdf: pdf ? {
       name: path.basename(pdf),
-      path: path.relative(VAULT_ROOT, pdf).replace(/\\/g, "/"),
+      path: vaultRelative(pdf),
       url: fileUrl(pdf),
+      fileUrl: `file:///${pdf.replace(/\\/g, "/").replace(/^([A-Za-z]):/, "$1:")}`,
     } : null,
   };
 }
@@ -121,8 +134,128 @@ function confAnalysisIndex() {
   return index;
 }
 
+function confNotePapers() {
+  return walk(path.join(VAULT_ROOT, "30_confpapers"))
+    .filter((file) => path.basename(file) === "note.md")
+    .map((file) => {
+      const folder = path.dirname(file);
+      const meta = readJson(path.join(folder, "metadata.json"), {}) || {};
+      const markdown = readText(file);
+      const media = mediaFiles(folder);
+      const title = meta.title || extractLine(markdown, /^#\s+(.+)$/m) || path.basename(folder);
+      return {
+        id: `conf-note-${path.relative(VAULT_ROOT, folder).replace(/[^a-zA-Z0-9._-]+/g, "-")}`,
+        source: "conf-papers",
+        title,
+        zhTitle: inferZhTitle(title),
+        venue: meta.venue || meta.conference || "Conference Paper",
+        score: meta.score?.total ?? null,
+        matchedKeywords: meta.score?.matchedKeywords || meta.matchedKeywords || [],
+        summary: inferChineseSummary(meta.title ? meta : { title }),
+        authors: meta.authors || [],
+        pdfUrl: meta.pdfUrl,
+        openAccessUrl: meta.openAccessUrl,
+        doiUrl: meta.doiUrl,
+        abstract: meta.abstract || "",
+        analysisPath: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+        analysisMarkdown: markdown,
+        analysisFolder: path.relative(VAULT_ROOT, folder).replace(/\\/g, "/"),
+        images: media.images,
+        imageCount: media.imageCount,
+        localPdf: media.localPdf,
+        folder: path.relative(VAULT_ROOT, folder).replace(/\\/g, "/"),
+        date: pathDate(file),
+        modifiedAt: mtimeIso(file),
+      };
+    });
+}
+
+function paperAnalysisIndex() {
+  const index = new Map();
+  for (const file of paperNoteFiles()) {
+    const text = readText(file);
+    const title = line(text, /^#\s+(.+)$/m) || path.basename(file, ".md");
+    const media = mediaFiles(path.dirname(file));
+    const item = {
+      path: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+      markdown: text,
+      folder: path.relative(VAULT_ROOT, path.dirname(file)).replace(/\\/g, "/"),
+      images: media.images,
+      imageCount: media.imageCount,
+      localPdf: media.localPdf,
+      modifiedAt: mtimeIso(file),
+      date: pathDate(file),
+    };
+    const key = title.toLowerCase();
+    if (!index.has(key)) index.set(key, []);
+    index.get(key).push(item);
+  }
+  return index;
+}
+
+function findAnalysis(index, title, preferredDate = "") {
+  const items = index.get(String(title || "").toLowerCase()) || [];
+  if (!items.length) return null;
+  return items.find((item) => item.date === preferredDate) || items[0];
+}
+
 function line(text, regex) {
   return text.match(regex)?.[1]?.trim() || "";
+}
+
+function dailyField(section, name) {
+  return line(section, new RegExp(`^- \\*\\*${name}\\*\\*:\\s*(.+)$`, "m"));
+}
+
+function parseAuthors(value) {
+  if (!value || value === "--") return [];
+  return value.replace(/,?\s*等\s*\d+\s*人$/, "").split(/[,、]/).map((x) => x.trim()).filter(Boolean);
+}
+
+function parseDailyRecommendations(file, analysisIndex) {
+  if (!file) return [];
+  const text = readText(file);
+  const preferredDate = file.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || "";
+  return text.split(/\n---\n/).map((section, idx) => {
+    const heading = section.match(/^### \[\[([^|\]]+)\|(.+?)\]\]/m);
+    if (!heading) return null;
+    const title = heading[2].trim();
+    const links = dailyField(section, "链接");
+    const analysis = findAnalysis(analysisIndex, title, preferredDate);
+    const arxiv = links.match(/\[arXiv\]\((https?:\/\/[^)]+)\)/)?.[1] || "";
+    const pdf = links.match(/PDF:\s*(https?:\/\/\S+)/)?.[1] || "";
+    const score = Number(dailyField(section, "推荐分")) || null;
+    const matchedKeywords = dailyField(section, "匹配关键词").split(",").map((x) => x.trim()).filter(Boolean);
+    const summary = line(section, /^\*\*一句话总结\*\*:\s*(.+)$/m)
+      || line(section, /^\*\*中文摘要翻译\*\*:\s*(.+)$/m)
+      || "来自最新日报推荐，点击查看详情。";
+    const abstract = line(section, /^\*\*原始摘要\*\*:\s*([\s\S]+)$/m).split(/\n---\n/)[0].trim();
+    return {
+      id: `daily-${idx}`,
+      source: "daily-recommendation",
+      title,
+      zhTitle: line(section, /^\*\*中文题名\*\*:\s*(.+)$/m),
+      venue: "Daily Recommendation",
+      score,
+      matchedKeywords,
+      summary,
+      authors: parseAuthors(dailyField(section, "作者")),
+      pdfUrl: pdf,
+      openAccessUrl: arxiv,
+      abstract,
+      analysisPath: analysis?.path || null,
+      analysisFolder: analysis?.folder || null,
+      analysisMarkdown: analysis?.markdown || null,
+      images: analysis?.images || [],
+      imageCount: analysis?.imageCount || analysis?.images?.length || 0,
+      localPdf: analysis?.localPdf || null,
+      folder: analysis?.folder || path.relative(VAULT_ROOT, path.dirname(file)).replace(/\\/g, "/"),
+      date: pathDate(file) || file.match(/(\d{4}-\d{2}-\d{2})/)?.[1] || "",
+      modifiedAt: analysis?.modifiedAt || mtimeIso(file),
+      dailyPath: path.relative(VAULT_ROOT, file).replace(/\\/g, "/"),
+      markdown: section.trim(),
+    };
+  }).filter(Boolean);
 }
 
 function inferZhTitle(title) {
@@ -176,6 +309,10 @@ const runFile = latestRunStatus();
 const run = runFile ? readJson(runFile, {}) : {};
 const papers = [];
 const analysisIndex = confAnalysisIndex();
+const localAnalysisIndex = paperAnalysisIndex();
+const dailyFile = latestDailyNote();
+const dailyPapers = parseDailyRecommendations(dailyFile, localAnalysisIndex);
+papers.push(...dailyPapers);
 
 for (const [idx, paper] of (run.topPapers || []).entries()) {
   const analysis = analysisIndex.get(String(paper.title || "").toLowerCase()) || null;
@@ -205,8 +342,23 @@ for (const [idx, paper] of (run.topPapers || []).entries()) {
   });
 }
 
-for (const file of paperNoteFiles().slice(0, 20)) {
-  papers.push(fromPaperNote(file));
+const paperKey = (paper) => `${paper.source}:${paper.date || ""}:${String(paper.title || "").toLowerCase()}`;
+const seenPaperKeys = new Set(papers.map(paperKey));
+for (const file of paperNoteFiles()) {
+  const note = fromPaperNote(file);
+  const key = paperKey(note);
+  if (!seenPaperKeys.has(key)) {
+    papers.push(note);
+    seenPaperKeys.add(key);
+  }
+}
+
+for (const note of confNotePapers()) {
+  const key = paperKey(note);
+  if (!seenPaperKeys.has(key)) {
+    papers.push(note);
+    seenPaperKeys.add(key);
+  }
 }
 
 const totalImages = papers.reduce((sum, paper) => sum + (paper.imageCount || paper.images?.length || 0), 0);
@@ -218,7 +370,9 @@ const data = {
     confFiltered: run.status?.filtered ?? 0,
     confRateLimited: Boolean(run.status?.s2RateLimited),
     localNotes: paperNoteFiles().length,
+    dailyRecommendations: dailyPapers.length,
     totalImages,
+    latestDailyNote: dailyFile ? path.relative(VAULT_ROOT, dailyFile).replace(/\\/g, "/") : null,
     latestConfRun: runFile ? path.relative(VAULT_ROOT, runFile).replace(/\\/g, "/") : null,
   },
   runFile: runFile ? path.relative(VAULT_ROOT, runFile).replace(/\\/g, "/") : null,

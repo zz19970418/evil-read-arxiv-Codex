@@ -1,0 +1,70 @@
+{
+  "target_date": "2026-05-15",
+  "status": "ok",
+  "rate_limited": true,
+  "date_windows": {
+    "recent_30d": {
+      "start": "2026-04-15",
+      "end": "2026-05-15"
+    },
+    "past_year": {
+      "start": "2025-05-15",
+      "end": "2026-04-14"
+    }
+  },
+  "total_recent": 0,
+  "total_fallback": 10,
+  "fallback_sources": [
+    "europe_pmc",
+    "pubmed",
+    "crossref"
+  ],
+  "total_hot": 0,
+  "total_unique": 1,
+  "top_papers": [
+    {
+      "title": "Repeated low-level red-light therapy for improving asthenopic symptoms and accommodation in presbyopia.",
+      "abstract": "Repeated low-level red-light therapy for improving asthenopic symptoms and accommodation in presbyopia.",
+      "summary": "Repeated low-level red-light therapy for improving asthenopic symptoms and accommodation in presbyopia.",
+      "publicationDate": "2026 Dec",
+      "published_date": null,
+      "authors": [
+        "Song F",
+        "Zhao Z",
+        "Zhang J",
+        "Li J",
+        "Wu Y",
+        "Liu Y",
+        "Li P",
+        "Wang Y",
+        "Lai M",
+        "He M",
+        "Chen Y"
+      ],
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42046494/",
+      "source": "pubmed",
+      "externalIds": {
+        "DOI": "10.1080/07853890.2026.2663105",
+        "PubMed": "42046494"
+      },
+      "citationCount": 0,
+      "influentialCitationCount": 0,
+      "openAccessPdf": {
+        "url": ""
+      },
+      "scores": {
+        "relevance": 0.5,
+        "recency": 0,
+        "popularity": 0.5,
+        "quality": 0.0,
+        "recommendation": 1.17
+      },
+      "matched_domain": "optometry-and-refraction",
+      "matched_keywords": [
+        "accommodation"
+      ],
+      "is_hot_paper": false,
+      "note_filename": "Repeated_low-level_red-light_therapy_for_improving_asthenopic_symptoms_and_accommodation_in_presbyopia."
+    }
+  ]
+}

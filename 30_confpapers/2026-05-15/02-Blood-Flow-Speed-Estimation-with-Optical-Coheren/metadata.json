@@ -1,0 +1,39 @@
+{
+  "title": "Blood Flow Speed Estimation with Optical Coherence Tomography Angiography Images",
+  "authors": [
+    "Wensheng Cheng",
+    "Zhenghong Li",
+    "Jiaxiang Ren 0002",
+    "Hyomin Jeong",
+    "Congwu Du",
+    "Yingtian Pan",
+    "Haibin Ling"
+  ],
+  "year": 2025,
+  "conference": "CVPR",
+  "venue": "CVPR 2025",
+  "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ChengL0JDPL25",
+  "links": [
+    "https://openaccess.thecvf.com/content/CVPR2025/html/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.html",
+    "https://doi.org/10.1109/CVPR52734.2025.00979"
+  ],
+  "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.html",
+  "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.00979",
+  "matchedTitleKeywords": [
+    "optical coherence tomography"
+  ],
+  "excludedKeywords": [],
+  "roughScore": 36,
+  "abstract": "Estimating blood flow speed is essential in many medical and physiological applications, yet it is extremely challenging due to complex vascular structure and flow dynamics, particularly for cerebral cortex regions. Existing techniques, such as Optical Doppler Tomography (ODT), generally require complex hardware control and signal processing, and still suffer from inherent system-level artifacts. To address these challenges, we propose a new learning-based approach named OCTA-Flow, which directly estimates vascular blood flow speed from Optical Coherence Tomography Angiography (OCTA) images that are commonly used for vascular structure analysis. OCTA-Flow employs several novel components to achieve this goal. First, using an encoder-decoder architecture, OCTA-Flow leverages ODT data as pseudo labels during training, thus bypassing the difficulty of collecting ground truth data. Second, to capture the relationship between vessels of varying scales and their flow speed, we design an Adaptive Window Fusion module that employs multiscale window attention. Third, to mitigate ODT artifacts, we incorporate a Conditional Random Field Decoder that promotes smoothness and consistency in the estimated blood flow. Together, these innovations enable OCTA-Flow to effectively produce accurate flow estimation, suppress the artifacts in ODT, and enhance practicality, benefiting from the established techniques of OCTA data acquisition. The code and data are available at https://github.com/Spritea/OCTA-Flow.",
+  "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Cheng_Blood_Flow_Speed_Estimation_with_Optical_Coherence_Tomography_Angiography_Images_CVPR_2025_paper.pdf",
+  "score": {
+    "relevance": 20,
+    "popularity": 0,
+    "quality": 20,
+    "total": 40,
+    "matchedKeywords": [
+      "optical coherence tomography",
+      "OCTA"
+    ]
+  }
+}

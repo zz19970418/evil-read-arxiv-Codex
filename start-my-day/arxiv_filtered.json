@@ -1,63 +1,27 @@
 {
-  "target_date": "2026-05-14",
+  "target_date": "2026-05-15",
   "status": "ok",
   "rate_limited": true,
   "date_windows": {
     "recent_30d": {
-      "start": "2026-04-14",
-      "end": "2026-05-14"
+      "start": "2026-04-15",
+      "end": "2026-05-15"
     },
     "past_year": {
-      "start": "2025-05-14",
-      "end": "2026-04-13"
+      "start": "2025-05-15",
+      "end": "2026-04-14"
     }
   },
-  "total_recent": 0,
+  "total_recent": 13,
+  "total_fallback": 0,
+  "fallback_sources": [
+    "europe_pmc",
+    "pubmed",
+    "crossref"
+  ],
   "total_hot": 0,
-  "total_unique": 50,
+  "total_unique": 11,
   "top_papers": [
-    {
-      "id": "http://arxiv.org/abs/2605.13443v1",
-      "title": "Imaging-formulation-based numerical speckle reduction for optical coherence tomography",
-      "summary": "Speckle is an intrinsic pattern in optical coherence tomography (OCT) that obscures fine image features and degrades effective resolution. In this study, we propose a numerical speckle reduction method based on the dispersed scatterer model and the imaging formulation of OCT. Utilizing the shifted-complex-conjugate-product, the proposed method digitally modulates speckle patterns by shifting the complex en face OCT signal and averaging the resulting real-part images. This approach allows for effective speckle suppression using a single volumetric acquisition without additional hardware modifications. OCT point spread function phantom measurement demonstrated lateral resolution preservation of the proposed method. We validated the method using a custom-built full-field swept-source OCT system on human breast adenocarcinoma spheroids and a zebrafish eye. Quantitative evaluations using the contrast-to-noise ratio and equivalent number of looks demonstrated that the proposed method significantly outperforms conventional frame-averaging techniques. The speckle-reduced images revealed microstructures previously obscured by speckle, such as necrotic regions in spheroids, while preserving the original image sharpness and resolution.",
-      "authors": [
-        "Xibo Wang",
-        "Shuichi Makita",
-        "Nobuhisa Tateno",
-        "Suzuyo Komeda",
-        "Cunyou Bao",
-        "Atsuko Furukawa",
-        "Satoshi Matsusaka",
-        "Makoto Kobayashi",
-        "Yoshiaki Yasuno"
-      ],
-      "affiliations": [],
-      "published": "2026-05-13T12:37:50Z",
-      "published_date": "2026-05-13 12:37:50+00:00",
-      "updated": "2026-05-13T12:37:50Z",
-      "categories": [
-        "physics.optics"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2605.13443v1",
-      "url": "http://arxiv.org/abs/2605.13443v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 3.63,
-        "recency": 3.0,
-        "popularity": 2.0,
-        "quality": 1.5,
-        "recommendation": 9.34
-      },
-      "matched_domain": "optical-coherence-tomography",
-      "matched_keywords": [
-        "optical coherence tomography",
-        "OCT",
-        "swept-source OCT",
-        "physics.optics"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "Imaging-formulation-based_numerical_speckle_reduction_for_optical_coherence_tomography"
-    },
     {
       "id": "http://arxiv.org/abs/2605.02707v1",
       "title": "SAIL: Structure-Aware Interpretable Learning for Anatomy-Aligned Post-hoc Explanations in OCT",
@@ -81,11 +45,11 @@
       "url": "http://arxiv.org/abs/2605.02707v1",
       "source": "arxiv",
       "scores": {
-        "relevance": 3.84,
+        "relevance": 2.8,
         "recency": 3.0,
         "popularity": 1.5,
         "quality": 1.6,
-        "recommendation": 9.15
+        "recommendation": 7.77
       },
       "matched_domain": "optical-coherence-tomography",
       "matched_keywords": [
@@ -95,121 +59,10 @@
         "cs.AI"
       ],
       "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.02707v1"
+      },
       "note_filename": "SAIL_Structure-Aware_Interpretable_Learning_for_Anatomy-Aligned_Post-hoc_Explanations_in_OCT"
-    },
-    {
-      "id": "http://arxiv.org/abs/2604.22139v1",
-      "title": "Anatomy-Aware Unsupervised Detection and Localization of Retinal Abnormalities in Optical Coherence Tomography",
-      "summary": "Reliable automated analysis of Optical Coherence Tomography (OCT) imaging is crucial for diagnosing retinal disorders but faces a critical barrier: the need for expensive, labor-intensive expert annotations. Supervised deep learning models struggle to generalize across diverse pathologies, imaging devices, and patient populations due to their restricted vocabulary of annotated abnormalities. We propose an unsupervised anomaly detection framework that learns the normative distribution of healthy retinal anatomy without lesion annotations, directly addressing annotation efficiency challenges in clinical deployment. Our approach leverages a discrete latent model trained on normal B-scans to capture OCT-specific structural patterns. To enhance clinical robustness, we incorporate retinal layer-aware supervision and structured triplet learning to separate healthy from pathological representations, improving model reliability across varied imaging conditions. During inference, anomalies are detected and localized via reconstruction discrepancies, enabling both image and pixel-level identification without requiring disease-specific labels. On the Kermany dataset (AUROC: 0.799), our method substantially outperforms VAE, VQVAE, VQGAN, and f-AnoGAN baselines. Critically, cross-dataset evaluation on Srinivasan achieves AUROC 0.884 with superior generalization, demonstrating robust domain adaptation. On the external RETOUCH benchmark, unsupervised anomaly segmentation achieves competitive Dice (0.200) and mIoU (0.117) scores, validating reproducibility across institutions.",
-      "authors": [
-        "Tania Haghighi",
-        "Sina Gholami",
-        "Hamed Tabkhi",
-        "Minhaj Nur Alam"
-      ],
-      "affiliations": [],
-      "published": "2026-04-24T01:09:05Z",
-      "published_date": "2026-04-24 01:09:05+00:00",
-      "updated": "2026-04-24T01:09:05Z",
-      "categories": [
-        "cs.CV",
-        "cs.LG"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2604.22139v1",
-      "url": "http://arxiv.org/abs/2604.22139v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 3.84,
-        "recency": 3.0,
-        "popularity": 1.0,
-        "quality": 2.0,
-        "recommendation": 8.79
-      },
-      "matched_domain": "optical-coherence-tomography",
-      "matched_keywords": [
-        "optical coherence tomography",
-        "OCT",
-        "cs.CV",
-        "cs.LG"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "Anatomy-Aware_Unsupervised_Detection_and_Localization_of_Retinal_Abnormalities_in_Optical_Coherence_Tomography"
-    },
-    {
-      "id": "http://arxiv.org/abs/2605.02720v1",
-      "title": "PubMed-Ophtha: An open resource for training ophthalmology vision-language models on scientific literature",
-      "summary": "Vision-language models hold considerable promise for ophthalmology, but their development depends on large-scale, high-quality image-text datasets that remain scarce. We present PubMed-Ophtha, a hierarchical dataset of 102,023 ophthalmological image-caption pairs extracted from 15,842 open-access articles in PubMed Central. Unlike existing datasets, figures are extracted directly from article PDFs at full resolution and decomposed into their constituent panels, panel identifiers, and individual images. Each image is annotated with its imaging modality -- color fundus photography, optical coherence tomography, retinal imaging, or other -- and a mark status indicating the presence of annotation marks such as arrows. Figure captions are split into panel-level subcaptions using a two-step LLM approach, achieving a mean average sentence BLEU score of 0.913 on human-annotated data. Panel and image detection models reach a mAP@0.50 of 0.909 and 0.892, respectively, and figure extraction achieves a median IoU of 0.997. To support reproducibility, we additionally release the human-annotated ground-truth data, all trained models, and the full dataset generation pipeline.",
-      "authors": [
-        "Verena Jasmin Hallitschke",
-        "Carsten Eickhoff",
-        "Philipp Berens"
-      ],
-      "affiliations": [],
-      "published": "2026-05-04T15:19:42Z",
-      "published_date": "2026-05-04 15:19:42+00:00",
-      "updated": "2026-05-04T15:19:42Z",
-      "categories": [
-        "cs.CV",
-        "cs.CL"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2605.02720v1",
-      "url": "http://arxiv.org/abs/2605.02720v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 3.39,
-        "recency": 3.0,
-        "popularity": 1.5,
-        "quality": 1.3,
-        "recommendation": 8.45
-      },
-      "matched_domain": "optical-coherence-tomography",
-      "matched_keywords": [
-        "optical coherence tomography",
-        "ophthalmology",
-        "cs.CV"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "PubMed-Ophtha_An_open_resource_for_training_ophthalmology_vision-language_models_on_scientific_literature"
-    },
-    {
-      "id": "http://arxiv.org/abs/2604.20918v1",
-      "title": "EDU-Net: Retinal Pathological Fluid Segmentation in OCT Images with Multiscale Feature Fusion and Boundary Optimization",
-      "summary": "Objective: Diabetic macular edema (DME) is the leading cause of severe visual impairment in patients with diabetes. Quantification of retinal fluid, particularly intraretinal fluid (IRF) and subretinal fluid (SRF), plays a critical role in the management of DME. Although optical coherence tomography (OCT) can be used for detection, the variable morphology of fluid accumulation and the blurred boundaries caused by noise interference still limit the accuracy of OCT's automatic segmentation. Methods: Retrospective model development and validation study. This study proposes a novel edge-guided dual-branch encoder-decoder network (EDU-Net) to achieve accurate and efficient automatic segmentation of OCT liquid lesions. The local feature extraction branch is based on the EfficientNet model, which precisely captures tiny lesions by leveraging its lightweight separable convolution and high-resolution feature preservation strategy. The global feature extraction branch is based on the large-kernel efficient convolution (LKEC) module and the downsampling layer design to enhance long-range dependencies and global semantics. EDU-Net applies a multi-category edge-guided attention module to fuse high-frequency boundary detail information to each resolution feature to optimize the boundary segmentation performance. Results: Extensive results on the in-house and public datasets demonstrate that EDU-Net achieves state-of-the-art DSC segmentation performance in terms of efficiency and robustness, especially in the segmentation of IRF lesions. Conclusions: EDU-Net integrates local details with global context and optimizes boundaries, achieving an improvement in the accuracy of automatic segmentation of retinal fluid.",
-      "authors": [
-        "Zijun Lei",
-        "Zikang Xu",
-        "Liang Zhang",
-        "Ge Song",
-        "Hanyu Guo",
-        "Dan Cao",
-        "Yujia Zhou",
-        "Qianjin Feng"
-      ],
-      "affiliations": [],
-      "published": "2026-04-22T03:54:47Z",
-      "published_date": "2026-04-22 03:54:47+00:00",
-      "updated": "2026-04-22T03:54:47Z",
-      "categories": [
-        "eess.IV"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2604.20918v1",
-      "url": "http://arxiv.org/abs/2604.20918v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 3.54,
-        "recency": 3.0,
-        "popularity": 1.0,
-        "quality": 1.5,
-        "recommendation": 8.22
-      },
-      "matched_domain": "optical-coherence-tomography",
-      "matched_keywords": [
-        "optical coherence tomography",
-        "OCT",
-        "eess.IV"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "EDU-Net_Retinal_Pathological_Fluid_Segmentation_in_OCT_Images_with_Multiscale_Feature_Fusion_and_Boundary_Optimization"
     },
     {
       "id": "http://arxiv.org/abs/2605.02714v1",
@@ -241,11 +94,11 @@
       "url": "http://arxiv.org/abs/2605.02714v1",
       "source": "arxiv",
       "scores": {
-        "relevance": 2.78,
+        "relevance": 2.6,
         "recency": 3.0,
         "popularity": 1.5,
         "quality": 2.3,
-        "recommendation": 7.97
+        "recommendation": 7.73
       },
       "matched_domain": "optical-coherence-tomography",
       "matched_keywords": [
@@ -255,7 +108,261 @@
         "cs.AI"
       ],
       "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.02714v1"
+      },
       "note_filename": "OphMAE_Bridging_Volumetric_and_Planar_Imaging_with_a_Foundation_Model_for_Adaptive_Ophthalmological_Diagnosis"
+    },
+    {
+      "id": "http://arxiv.org/abs/2605.08819v1",
+      "title": "From pre-training to downstream performance: Does domain-specific pre-training make sense?",
+      "summary": "Deep learning techniques have revolutionised medical imaging, improving diagnostic accuracy and enabling both more accurate and earlier disease detection. However, the relationship between pre-training strategies and downstream performance in medical imaging models requires further exploration. Here, we systematically compare convolutional neural networks and transformers, examining various pre-training approaches, including supervised and self-supervised learning, as well as different initialisations and data modalities. Models are evaluated on natural images, chest X-rays, chest CT and retina OCT images, considering the effects of matching pre-training data with target modalities. Our findings indicate that only pre-training on data closely matching the target modality significantly improves downstream performance. While self-supervised learning can outperform supervised methods, its effectiveness varies with context. The study underscores the importance of pre-training strategies to enhance the reliability and effectiveness of deep learning models in medical imaging. By addressing these key factors, our research aims to contribute to the development of more accurate and dependable diagnostic tools, ultimately improving patient outcomes in clinical settings.",
+      "authors": [
+        "Felix Krones"
+      ],
+      "affiliations": [],
+      "published": "2026-05-09T09:11:02Z",
+      "published_date": "2026-05-09 09:11:02+00:00",
+      "updated": "2026-05-09T09:11:02Z",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2605.08819v1",
+      "url": "http://arxiv.org/abs/2605.08819v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 2.3,
+        "recency": 3.0,
+        "popularity": 2.0,
+        "quality": 1.5,
+        "recommendation": 7.57
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "OCT",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.08819v1"
+      },
+      "note_filename": "From_pre-training_to_downstream_performance_Does_domain-specific_pre-training_make_sense"
+    },
+    {
+      "id": "http://arxiv.org/abs/2604.22139v1",
+      "title": "Anatomy-Aware Unsupervised Detection and Localization of Retinal Abnormalities in Optical Coherence Tomography",
+      "summary": "Reliable automated analysis of Optical Coherence Tomography (OCT) imaging is crucial for diagnosing retinal disorders but faces a critical barrier: the need for expensive, labor-intensive expert annotations. Supervised deep learning models struggle to generalize across diverse pathologies, imaging devices, and patient populations due to their restricted vocabulary of annotated abnormalities. We propose an unsupervised anomaly detection framework that learns the normative distribution of healthy retinal anatomy without lesion annotations, directly addressing annotation efficiency challenges in clinical deployment. Our approach leverages a discrete latent model trained on normal B-scans to capture OCT-specific structural patterns. To enhance clinical robustness, we incorporate retinal layer-aware supervision and structured triplet learning to separate healthy from pathological representations, improving model reliability across varied imaging conditions. During inference, anomalies are detected and localized via reconstruction discrepancies, enabling both image and pixel-level identification without requiring disease-specific labels. On the Kermany dataset (AUROC: 0.799), our method substantially outperforms VAE, VQVAE, VQGAN, and f-AnoGAN baselines. Critically, cross-dataset evaluation on Srinivasan achieves AUROC 0.884 with superior generalization, demonstrating robust domain adaptation. On the external RETOUCH benchmark, unsupervised anomaly segmentation achieves competitive Dice (0.200) and mIoU (0.117) scores, validating reproducibility across institutions.",
+      "authors": [
+        "Tania Haghighi",
+        "Sina Gholami",
+        "Hamed Tabkhi",
+        "Minhaj Nur Alam"
+      ],
+      "affiliations": [],
+      "published": "2026-04-24T01:09:05Z",
+      "published_date": "2026-04-24 01:09:05+00:00",
+      "updated": "2026-04-24T01:09:05Z",
+      "categories": [
+        "cs.CV",
+        "cs.LG"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2604.22139v1",
+      "url": "http://arxiv.org/abs/2604.22139v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 2.8,
+        "recency": 3.0,
+        "popularity": 1.0,
+        "quality": 2.0,
+        "recommendation": 7.4
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "optical coherence tomography",
+        "OCT",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2604.22139v1"
+      },
+      "note_filename": "Anatomy-Aware_Unsupervised_Detection_and_Localization_of_Retinal_Abnormalities_in_Optical_Coherence_Tomography"
+    },
+    {
+      "id": "http://arxiv.org/abs/2605.13443v1",
+      "title": "Imaging-formulation-based numerical speckle reduction for optical coherence tomography",
+      "summary": "Speckle is an intrinsic pattern in optical coherence tomography (OCT) that obscures fine image features and degrades effective resolution. In this study, we propose a numerical speckle reduction method based on the dispersed scatterer model and the imaging formulation of OCT. Utilizing the shifted-complex-conjugate-product, the proposed method digitally modulates speckle patterns by shifting the complex en face OCT signal and averaging the resulting real-part images. This approach allows for effective speckle suppression using a single volumetric acquisition without additional hardware modifications. OCT point spread function phantom measurement demonstrated lateral resolution preservation of the proposed method. We validated the method using a custom-built full-field swept-source OCT system on human breast adenocarcinoma spheroids and a zebrafish eye. Quantitative evaluations using the contrast-to-noise ratio and equivalent number of looks demonstrated that the proposed method significantly outperforms conventional frame-averaging techniques. The speckle-reduced images revealed microstructures previously obscured by speckle, such as necrotic regions in spheroids, while preserving the original image sharpness and resolution.",
+      "authors": [
+        "Xibo Wang",
+        "Shuichi Makita",
+        "Nobuhisa Tateno",
+        "Suzuyo Komeda",
+        "Cunyou Bao",
+        "Atsuko Furukawa",
+        "Satoshi Matsusaka",
+        "Makoto Kobayashi",
+        "Yoshiaki Yasuno"
+      ],
+      "affiliations": [],
+      "published": "2026-05-13T12:37:50Z",
+      "published_date": "2026-05-13 12:37:50+00:00",
+      "updated": "2026-05-13T12:37:50Z",
+      "categories": [
+        "physics.optics"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2605.13443v1",
+      "url": "http://arxiv.org/abs/2605.13443v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 2.1,
+        "recency": 3.0,
+        "popularity": 2.0,
+        "quality": 1.5,
+        "recommendation": 7.3
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "optical coherence tomography",
+        "OCT",
+        "swept-source OCT",
+        "physics.optics"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.13443v1"
+      },
+      "note_filename": "Imaging-formulation-based_numerical_speckle_reduction_for_optical_coherence_tomography"
+    },
+    {
+      "id": "http://arxiv.org/abs/2605.14500v1",
+      "title": "Physics-Based iOCT Sonification for Real-time Interaction Awareness in Subretinal Injection",
+      "summary": "Subretinal injection is a delicate vitreoretinal procedure requiring precise needle placement within the subretinal space while avoiding perforation of the retinal pigment epithelium (RPE), a layer directly beneath the target with extremely limited regenerative capacity. To enhance depth perception during cannula advancement, intraoperative optical coherence tomography (iOCT) offers high-resolution cross-sectional visualization of needle-tissue interaction; however, interpreting these images requires sustained visual attention alongside the en face microscope view, thereby increasing cognitive load during critical phases and placing additional demands on the surgeon's proprioceptive control. In this paper, we propose a structured, real-time sonification framework designed for extensible mapping of iOCT-derived anatomical features into perceptual auditory feedback. The method employs a physics-inspired acoustic model driven by segmented retinal layers from a stream of iOCT B-scans, with needle motion and injection-induced retinal layer displacements serving as excitation inputs to the sound model, enabling perception of tool position and retinal deformation. In a controlled user study (n=34), the proposed sonification achieved high retinal layer identification accuracy and robust detection of retinal deformation-related events, significantly outperforming a state-of-the-art baseline in overall event identification (83.4% vs. 60.6%, p < 0.001), with gains driven primarily by enhanced detection of injection-induced retinal deformation. Evaluation by experts (n=4) confirmed the clinical relevance and potential intraoperative applicability of the method. These results establish structured iOCT sonification as a viable complementary modality for real-time surgical guidance in subretinal injection.",
+      "authors": [
+        "Luis D. Reyes Vargas",
+        "Veronica Ruozzi",
+        "Andrea K. M. Ross",
+        "Shervin Dehghani",
+        "Michael Sommersperger",
+        "Koorosh Faridpooya",
+        "Mohammad Ali Nasseri",
+        "Merle Fairhurst",
+        "Nassir Navab",
+        "Sasan Matinfar"
+      ],
+      "affiliations": [],
+      "published": "2026-05-14T07:44:53Z",
+      "published_date": "2026-05-14 07:44:53+00:00",
+      "updated": "2026-05-14T07:44:53Z",
+      "categories": [
+        "cs.SD",
+        "cs.HC",
+        "eess.IV"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2605.14500v1",
+      "url": "http://arxiv.org/abs/2605.14500v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 1.8,
+        "recency": 3.0,
+        "popularity": 2.0,
+        "quality": 2.3,
+        "recommendation": 7.17
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "optical coherence tomography",
+        "OCT",
+        "eess.IV"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.14500v1"
+      },
+      "note_filename": "Physics-Based_iOCT_Sonification_for_Real-time_Interaction_Awareness_in_Subretinal_Injection"
+    },
+    {
+      "id": "http://arxiv.org/abs/2604.20918v1",
+      "title": "EDU-Net: Retinal Pathological Fluid Segmentation in OCT Images with Multiscale Feature Fusion and Boundary Optimization",
+      "summary": "Objective: Diabetic macular edema (DME) is the leading cause of severe visual impairment in patients with diabetes. Quantification of retinal fluid, particularly intraretinal fluid (IRF) and subretinal fluid (SRF), plays a critical role in the management of DME. Although optical coherence tomography (OCT) can be used for detection, the variable morphology of fluid accumulation and the blurred boundaries caused by noise interference still limit the accuracy of OCT's automatic segmentation. Methods: Retrospective model development and validation study. This study proposes a novel edge-guided dual-branch encoder-decoder network (EDU-Net) to achieve accurate and efficient automatic segmentation of OCT liquid lesions. The local feature extraction branch is based on the EfficientNet model, which precisely captures tiny lesions by leveraging its lightweight separable convolution and high-resolution feature preservation strategy. The global feature extraction branch is based on the large-kernel efficient convolution (LKEC) module and the downsampling layer design to enhance long-range dependencies and global semantics. EDU-Net applies a multi-category edge-guided attention module to fuse high-frequency boundary detail information to each resolution feature to optimize the boundary segmentation performance. Results: Extensive results on the in-house and public datasets demonstrate that EDU-Net achieves state-of-the-art DSC segmentation performance in terms of efficiency and robustness, especially in the segmentation of IRF lesions. Conclusions: EDU-Net integrates local details with global context and optimizes boundaries, achieving an improvement in the accuracy of automatic segmentation of retinal fluid.",
+      "authors": [
+        "Zijun Lei",
+        "Zikang Xu",
+        "Liang Zhang",
+        "Ge Song",
+        "Hanyu Guo",
+        "Dan Cao",
+        "Yujia Zhou",
+        "Qianjin Feng"
+      ],
+      "affiliations": [],
+      "published": "2026-04-22T03:54:47Z",
+      "published_date": "2026-04-22 03:54:47+00:00",
+      "updated": "2026-04-22T03:54:47Z",
+      "categories": [
+        "eess.IV"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2604.20918v1",
+      "url": "http://arxiv.org/abs/2604.20918v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 1.8,
+        "recency": 3.0,
+        "popularity": 1.0,
+        "quality": 1.5,
+        "recommendation": 5.9
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "optical coherence tomography",
+        "OCT",
+        "eess.IV"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2604.20918v1"
+      },
+      "note_filename": "EDU-Net_Retinal_Pathological_Fluid_Segmentation_in_OCT_Images_with_Multiscale_Feature_Fusion_and_Boundary_Optimization"
+    },
+    {
+      "id": "http://arxiv.org/abs/2605.02720v1",
+      "title": "PubMed-Ophtha: An open resource for training ophthalmology vision-language models on scientific literature",
+      "summary": "Vision-language models hold considerable promise for ophthalmology, but their development depends on large-scale, high-quality image-text datasets that remain scarce. We present PubMed-Ophtha, a hierarchical dataset of 102,023 ophthalmological image-caption pairs extracted from 15,842 open-access articles in PubMed Central. Unlike existing datasets, figures are extracted directly from article PDFs at full resolution and decomposed into their constituent panels, panel identifiers, and individual images. Each image is annotated with its imaging modality -- color fundus photography, optical coherence tomography, retinal imaging, or other -- and a mark status indicating the presence of annotation marks such as arrows. Figure captions are split into panel-level subcaptions using a two-step LLM approach, achieving a mean average sentence BLEU score of 0.913 on human-annotated data. Panel and image detection models reach a mAP@0.50 of 0.909 and 0.892, respectively, and figure extraction achieves a median IoU of 0.997. To support reproducibility, we additionally release the human-annotated ground-truth data, all trained models, and the full dataset generation pipeline.",
+      "authors": [
+        "Verena Jasmin Hallitschke",
+        "Carsten Eickhoff",
+        "Philipp Berens"
+      ],
+      "affiliations": [],
+      "published": "2026-05-04T15:19:42Z",
+      "published_date": "2026-05-04 15:19:42+00:00",
+      "updated": "2026-05-04T15:19:42Z",
+      "categories": [
+        "cs.CV",
+        "cs.CL"
+      ],
+      "pdf_url": "https://arxiv.org/pdf/2605.02720v1",
+      "url": "http://arxiv.org/abs/2605.02720v1",
+      "source": "arxiv",
+      "scores": {
+        "relevance": 1.3,
+        "recency": 3.0,
+        "popularity": 1.5,
+        "quality": 1.3,
+        "recommendation": 5.67
+      },
+      "matched_domain": "optical-coherence-tomography",
+      "matched_keywords": [
+        "optical coherence tomography",
+        "cs.CV"
+      ],
+      "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.02720v1"
+      },
+      "note_filename": "PubMed-Ophtha_An_open_resource_for_training_ophthalmology_vision-language_models_on_scientific_literature"
     },
     {
       "id": "http://arxiv.org/abs/2604.22646v1",
@@ -283,11 +390,11 @@
       "url": "http://arxiv.org/abs/2604.22646v1",
       "source": "arxiv",
       "scores": {
-        "relevance": 3.54,
+        "relevance": 1.8,
         "recency": 3.0,
         "popularity": 1.0,
         "quality": 0.4,
-        "recommendation": 7.85
+        "recommendation": 5.53
       },
       "matched_domain": "optical-coherence-tomography",
       "matched_keywords": [
@@ -296,112 +403,47 @@
         "physics.optics"
       ],
       "is_hot_paper": false,
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2604.22646v1"
+      },
       "note_filename": "Enhanced_Phase_Sensitive_SD-OCT_for_flow_imaging_using_ultrasonically_sculpted_optical_waveguides"
     },
     {
-      "id": "http://arxiv.org/abs/2605.10174v1",
-      "title": "BathyFacto: Refraction-Aware Two-Media Neural Radiance Fields for Bathymetry",
-      "summary": "Through-water photogrammetry based on UAV imagery enables shallow-water bathymetry, but refraction at the air-water interface violates the straight-ray assumption of Structure-from-Motion and causes systematic depth bias. We present BathyFacto, a refraction-aware two-media extension of Nerfacto integrated into Nerfstudio that targets metrically precise underwater point clouds. BathyFacto uses a shared hash-grid-based density field with a medium-conditioned color head that receives a one-bit medium flag (air or water) and traces each camera ray as two segments: a straight segment in air up to a planar water surface and a refracted segment in water computed via Snell's law with known refractive indices. To allocate samples efficiently across the air-water boundary, we employ a single proposal-network sampler that operates on a virtual straight ray spanning both media, combined with a kinked density wrapper that transparently corrects water-segment positions along the refracted direction before density evaluation. A data adaptation pipeline converts photogrammetric reconstructions to a Nerfstudio-compatible format, estimates the water plane from boundary markers, and provides per-pixel medium masks to gate refraction. We also extend the point cloud export with refraction-corrected backprojection and reversible coordinate transforms to world and global frames. On a simulated two-media scene with known ground truth, BathyFacto with refraction achieves a Cloud-to-Mesh mean distance of 0.06 m and 87 % completeness, compared to 0.52 m / 29 % for the Nerfacto baseline and 0.36 m / 21% for conventional MVS without refraction correction.",
+      "id": "http://arxiv.org/abs/2605.13016v1",
+      "title": "Revisiting constraints on primordial vector modes and implications for sourced magnetic fields and observed $EB$ power spectrum",
+      "summary": "We revisit regular primordial vector modes sustained by the anisotropic stress of free-streaming neutrinos. We consider two classes of neutrino-sector initial conditions, the neutrino velocity isocurvature mode ($ν\\mathrm{VI}$) and the neutrino octupole mode ($ν\\mathrm{OCT}$). We update their observational constraints using current cosmological data, and examine the impact of including the BICEP/Keck 2018 $B$-mode polarization data. From an MCMC analysis, we obtain the 95\\% C.L. upper bounds on the vector-to-scalar ratio as $r_\\mathrm{v}<1.55\\times10^{-4}$ and $r_\\mathrm{v}<1.04\\times10^{-2}$ for the $ν\\mathrm{VI}$ and $ν\\mathrm{OCT}$ modes at the vector pivot scale $k_{0} = 0.01\\,{\\rm Mpc}^{-1}$, respectively. We then study two consequences of these bounds. First, we estimate the magnetic fields inevitably generated in the pre-recombination plasma associated with the vector modes. We find that the magnetic-field amplitude at recombination with a coherent length of $1~{\\rm Mpc}$ is bounded by $B\\sim\\mathcal{O}(10^{-23})\\,{\\rm G}$ and $B\\sim\\mathcal{O}(10^{-21})\\,{\\rm G}$ for the $ν\\mathrm{VI}$ and $ν\\mathrm{OCT}$ modes, respetively, which is too small to provide the seed of magnetic fields observed today. Second, assuming the helical vector mode, we compute the induced CMB $EB$ spectrum. We show that even a fully helical primordial vector mode cannot reproduce the currently observed $EB$ signal while remaining consistent with parity-even CMB constraints.",
       "authors": [
-        "Markus Brezovsky",
-        "Anatol Günthner",
-        "Frederik Schulte",
-        "Lukas Winiwarter",
-        "Boris Jutzi",
-        "Gottfried Mandlburger"
+        "Kaito Yura",
+        "Shohei Saga",
+        "Shuichiro Yokoyama",
+        "Kiyotomo Ichiki"
       ],
       "affiliations": [],
-      "published": "2026-05-11T08:24:59Z",
-      "published_date": "2026-05-11 08:24:59+00:00",
-      "updated": "2026-05-11T08:24:59Z",
+      "published": "2026-05-13T05:11:09Z",
+      "published_date": "2026-05-13 05:11:09+00:00",
+      "updated": "2026-05-13T05:11:09Z",
       "categories": [
-        "cs.CV"
+        "astro-ph.CO"
       ],
-      "pdf_url": "https://arxiv.org/pdf/2605.10174v1",
-      "url": "http://arxiv.org/abs/2605.10174v1",
+      "pdf_url": "https://arxiv.org/pdf/2605.13016v1",
+      "url": "http://arxiv.org/abs/2605.13016v1",
       "source": "arxiv",
       "scores": {
-        "relevance": 2.03,
+        "relevance": 0.3,
         "recency": 3.0,
         "popularity": 2.0,
-        "quality": 1.3,
-        "recommendation": 7.14
-      },
-      "matched_domain": "ophthalmic-biometry",
-      "matched_keywords": [
-        "refraction",
-        "cs.CV"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "BathyFacto_Refraction-Aware_Two-Media_Neural_Radiance_Fields_for_Bathymetry"
-    },
-    {
-      "id": "http://arxiv.org/abs/2605.08819v1",
-      "title": "From pre-training to downstream performance: Does domain-specific pre-training make sense?",
-      "summary": "Deep learning techniques have revolutionised medical imaging, improving diagnostic accuracy and enabling both more accurate and earlier disease detection. However, the relationship between pre-training strategies and downstream performance in medical imaging models requires further exploration. Here, we systematically compare convolutional neural networks and transformers, examining various pre-training approaches, including supervised and self-supervised learning, as well as different initialisations and data modalities. Models are evaluated on natural images, chest X-rays, chest CT and retina OCT images, considering the effects of matching pre-training data with target modalities. Our findings indicate that only pre-training on data closely matching the target modality significantly improves downstream performance. While self-supervised learning can outperform supervised methods, its effectiveness varies with context. The study underscores the importance of pre-training strategies to enhance the reliability and effectiveness of deep learning models in medical imaging. By addressing these key factors, our research aims to contribute to the development of more accurate and dependable diagnostic tools, ultimately improving patient outcomes in clinical settings.",
-      "authors": [
-        "Felix Krones"
-      ],
-      "affiliations": [],
-      "published": "2026-05-09T09:11:02Z",
-      "published_date": "2026-05-09 09:11:02+00:00",
-      "updated": "2026-05-09T09:11:02Z",
-      "categories": [
-        "cs.CV",
-        "cs.LG"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2605.08819v1",
-      "url": "http://arxiv.org/abs/2605.08819v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 1.69,
-        "recency": 3.0,
-        "popularity": 2.0,
-        "quality": 1.5,
-        "recommendation": 6.75
+        "quality": 0.7,
+        "recommendation": 4.63
       },
       "matched_domain": "optical-coherence-tomography",
       "matched_keywords": [
-        "OCT",
-        "cs.CV",
-        "cs.LG"
+        "OCT"
       ],
       "is_hot_paper": false,
-      "note_filename": "From_pre-training_to_downstream_performance_Does_domain-specific_pre-training_make_sense"
-    },
-    {
-      "id": "http://arxiv.org/abs/2605.08548v1",
-      "title": "Negative refraction with low absorption using EIT in a four-level left-handed atomic system",
-      "summary": "We suggest a scheme for obtaining negative refraction with low absorption in a left-handed atomic system.Under the the appropriate conditions,the atomic system displays negative refraction with negative permittivity and permeability(Left-handedness)in a common frequency range,simultaneously.And the imaginary parts of permittivity and permeability show transparently propagate in the same frequency range.Finally,the negative refraction show low absorption due to the EIT effect,and the figure of merit demonstrated this in this resonant atomic system.",
-      "authors": [
-        "Shun-Cai Zhao",
-        "Zheng-Dong Liu",
-        "Gen Li",
-        "Nian Liu"
-      ],
-      "affiliations": [],
-      "published": "2026-05-08T23:18:27Z",
-      "published_date": "2026-05-08 23:18:27+00:00",
-      "updated": "2026-05-08T23:18:27Z",
-      "categories": [
-        "quant-ph"
-      ],
-      "pdf_url": "https://arxiv.org/pdf/2605.08548v1",
-      "url": "http://arxiv.org/abs/2605.08548v1",
-      "source": "arxiv",
-      "scores": {
-        "relevance": 2.0,
-        "recency": 3.0,
-        "popularity": 2.0,
-        "quality": 0.0,
-        "recommendation": 6.67
+      "openAccessPdf": {
+        "url": "https://arxiv.org/pdf/2605.13016v1"
       },
-      "matched_domain": "鎼滅储缁撴灉",
-      "matched_keywords": [
-        "refraction"
-      ],
-      "is_hot_paper": false,
-      "note_filename": "Negative_refraction_with_low_absorption_using_EIT_in_a_four-level_left-handed_atomic_system"
+      "note_filename": "Revisiting_constraints_on_primordial_vector_modes_and_implications_for_sourced_magnetic_fields_and_observed_$EB$_power_spectrum"
     }
   ]
 }

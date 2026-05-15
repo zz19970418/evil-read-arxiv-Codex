@@ -1,0 +1,38 @@
+{
+  "title": "MuTri: Multi-view Tri-alignment for OCT to OCTA 3D Image Translation",
+  "authors": [
+    "Zhuangzhuang Chen",
+    "Hualiang Wang",
+    "Chubin Ou",
+    "Xiaomeng Li 0001"
+  ],
+  "year": 2025,
+  "conference": "CVPR",
+  "venue": "CVPR 2025",
+  "dblpUrl": "https://dblp.org/rec/conf/conf/cvpr/cvpr2025.html#ChenWO025",
+  "links": [
+    "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.html",
+    "https://doi.org/10.1109/CVPR52734.2025.01945"
+  ],
+  "openAccessUrl": "https://openaccess.thecvf.com/content/CVPR2025/html/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.html",
+  "doiUrl": "https://doi.org/10.1109/CVPR52734.2025.01945",
+  "matchedTitleKeywords": [
+    "OCT",
+    "OCTA"
+  ],
+  "excludedKeywords": [],
+  "roughScore": 50,
+  "abstract": "Optical coherence tomography angiography (OCTA) shows its great importance in imaging microvascular networks by providing accurate 3D imaging of blood vessels, but it relies upon specialized sensors and expensive devices. For this reason, previous works show the potential to translate the readily available 3D Optical Coherence Tomography (OCT) images into 3D OCTA images. However, existing OCTA translation methods directly learn the mapping from the OCT domain to the OCTA domain in continuous and infinite space with guidance from only a single view, i.e., the OCTA project map, resulting in suboptimal results. To this end, we propose the multi-view Tri-alignment framework for OCT to OCTA 3D image translation in discrete and finite space, named MuTri. In the first stage, we pre-train two vector-quantized variational auto-encoder (VQVAE) by reconstructing 3D OCT and 3D OCTA data, providing semantic prior for subsequent multi-view guidances. In the second stage, our multi-view tri-alignment facilitates another VQVAE model to learn the mapping from the OCT domain to the OCTA domain in discrete and finite space. Specifically, a contrastive-inspired semantic alignment is proposed to maximize the mutual information with the pre-trained models from OCT and OCTA views, to facilitate codebook learning. Meanwhile, a vessel structure alignment is proposed to minimize the structure discrepancy with the pre-trained models from the OCTA project map view, benefiting from learning the detailed vessel structure information. We also collect the first large-scale dataset, namely, OCTA2024, which contains a pair of OCT and OCTA volumes from 846 subjects. Our codes and datasets are available at: https://github.com/xmed-lab/MuTri.",
+  "pdfUrl": "https://openaccess.thecvf.com/content/CVPR2025/papers/Chen_MuTri_Multi-view_Tri-alignment_for_OCT_to_OCTA_3D_Image_Translation_CVPR_2025_paper.pdf",
+  "score": {
+    "relevance": 34,
+    "popularity": 0,
+    "quality": 20,
+    "total": 54,
+    "matchedKeywords": [
+      "OCT",
+      "OCTA",
+      "optical coherence tomography"
+    ]
+  }
+}

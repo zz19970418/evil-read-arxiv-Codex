@@ -66,6 +66,64 @@ def _write_cache(path: Optional[Path], content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
+def _cooldown_path(cache_dir: Optional[Path], service: str, key: str) -> Optional[Path]:
+    if not cache_dir:
+        return None
+    digest = hashlib.sha256(key.encode("utf-8")).hexdigest()[:16]
+    return cache_dir / "cooldowns" / f"{service}-{digest}.json"
+
+
+def _cooldown_remaining(cache_dir: Optional[Path], service: str, key: str) -> int:
+    path = _cooldown_path(cache_dir, service, key)
+    if not path or not path.exists():
+        return 0
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        until = float(data.get("until", 0))
+    except Exception:
+        return 0
+    return max(0, int(until - time.time()))
+
+
+def _set_cooldown(cache_dir: Optional[Path], service: str, key: str, seconds: int) -> None:
+    path = _cooldown_path(cache_dir, service, key)
+    if not path:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "service": service,
+        "key": key,
+        "until": time.time() + max(1, seconds),
+        "seconds": max(1, seconds),
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _collect_priority_keywords(config: Dict, per_domain: int = 2, max_keywords: int = 12) -> List[str]:
+    domains = config.get("research_domains", {}) if config else {}
+    ranked = sorted(
+        domains.items(),
+        key=lambda item: item[1].get("priority", 0),
+        reverse=True,
+    )
+    keywords: List[str] = []
+    seen = set()
+    for _domain_name, domain_config in ranked:
+        for kw in domain_config.get("keywords", [])[:per_domain]:
+            normalized = kw.strip()
+            if not normalized:
+                continue
+            key = normalized.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            keywords.append(normalized)
+            if len(keywords) >= max_keywords:
+                return keywords
+    return keywords
+
+
 def _retry_after_seconds(error: Exception, default: int) -> int:
     if HAS_REQUESTS and hasattr(error, "response") and error.response is not None:
         retry_after = error.response.headers.get("Retry-After")
@@ -141,6 +199,11 @@ ARXIV_NS = {
 
 SEMANTIC_SCHOLAR_API_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
 SEMANTIC_SCHOLAR_FIELDS = "title,abstract,publicationDate,citationCount,influentialCitationCount,url,authors,authors.affiliations,externalIds"
+EUROPE_PMC_API_URL = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
+PUBMED_ESEARCH_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+PUBMED_ESUMMARY_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi"
+CROSSREF_WORKS_URL = "https://api.crossref.org/works"
+UNPAYWALL_API_URL = "https://api.unpaywall.org/v2"
 
 # 榛樿鍒嗙被鍏抽敭璇嶆槧灏勶紙褰撻厤缃腑鏃犵敤鎴疯嚜瀹氫箟鍏抽敭璇嶆椂浣跨敤锛?
 ARXIV_CATEGORY_KEYWORDS = {
@@ -270,6 +333,7 @@ def search_arxiv_by_date_range(
     cache_dir: Optional[Path] = None,
     cache_ttl_seconds: int = 0
 ) -> List[Dict]:
+    global RATE_LIMIT_HIT
     """
     浣跨敤 arXiv API 鎼滅储鎸囧畾鏃ユ湡鑼冨洿鍐呯殑璁烘枃
     
@@ -303,6 +367,12 @@ def search_arxiv_by_date_range(
     
     logger.info("[arXiv] Searching papers from %s to %s", start_date.date(), end_date.date())
     logger.debug("[arXiv] URL: %s...", url[:120])
+
+    cooldown = _cooldown_remaining(cache_dir, "arxiv", full_query)
+    if cooldown > 0:
+        RATE_LIMIT_HIT = True
+        logger.warning("[arXiv] Cooldown active for %ds; skipping broad category query", cooldown)
+        return []
     
     for attempt in range(max_retries):
         try:
@@ -317,9 +387,9 @@ def search_arxiv_by_date_range(
             logger.info("[arXiv] Found %d papers", len(papers))
             return papers
         except Exception as e:
-            global RATE_LIMIT_HIT
             if _is_rate_limit_error(e):
                 RATE_LIMIT_HIT = True
+                _set_cooldown(cache_dir, "arxiv", full_query, _retry_after_seconds(e, ARXIV_RATE_LIMIT_WAIT * 4))
             logger.warning("[arXiv] Error (attempt %d/%d): %s", attempt + 1, max_retries, e)
             if attempt < max_retries - 1:
                 wait_time = _retry_after_seconds(e, ARXIV_RATE_LIMIT_WAIT) if _is_rate_limit_error(e) else (2 ** attempt) * 2
@@ -341,6 +411,7 @@ def search_arxiv_by_keywords(
     cache_dir: Optional[Path] = None,
     cache_ttl_seconds: int = 0
 ) -> List[Dict]:
+    global RATE_LIMIT_HIT
     """
     浣跨敤鍏抽敭璇嶇洿鎺ユ悳绱?arXiv 璁烘枃锛堜笉闄愬垎绫伙級
 
@@ -387,6 +458,12 @@ def search_arxiv_by_keywords(
     logger.info("[arXiv] Keyword search: %s", keywords)
     logger.debug("[arXiv] URL: %s...", url[:150])
 
+    cooldown = _cooldown_remaining(cache_dir, "arxiv", full_query)
+    if cooldown > 0:
+        RATE_LIMIT_HIT = True
+        logger.warning("[arXiv] Cooldown active for %ds; skipping keyword query", cooldown)
+        return []
+
     for attempt in range(max_retries):
         try:
             xml_content = _fetch_text(
@@ -400,9 +477,9 @@ def search_arxiv_by_keywords(
             logger.info("[arXiv] Keyword search found %d papers", len(papers))
             return papers
         except Exception as e:
-            global RATE_LIMIT_HIT
             if _is_rate_limit_error(e):
                 RATE_LIMIT_HIT = True
+                _set_cooldown(cache_dir, "arxiv", full_query, _retry_after_seconds(e, ARXIV_RATE_LIMIT_WAIT * 4))
             logger.warning("[arXiv] Keyword search error (attempt %d/%d): %s", attempt + 1, max_retries, e)
             if attempt < max_retries - 1:
                 wait_time = _retry_after_seconds(e, ARXIV_RATE_LIMIT_WAIT) if _is_rate_limit_error(e) else (2 ** attempt) * 2
@@ -420,10 +497,12 @@ def search_semantic_scholar_hot_papers(
     start_date: datetime,
     end_date: datetime,
     top_k: int = 20,
+    request_limit: int = 25,
     max_retries: int = 2,
     cache_dir: Optional[Path] = None,
     cache_ttl_seconds: int = 0
 ) -> List[Dict]:
+    global RATE_LIMIT_HIT
     """
     浣跨敤 Semantic Scholar API 鎼滅储鎸囧畾鏃堕棿鑼冨洿鍐呯殑楂樺奖鍝嶅姏璁烘枃
 
@@ -444,7 +523,7 @@ def search_semantic_scholar_hot_papers(
     params = {
         "query": query,
         "publicationDateOrYear": date_range,
-        "limit": 100,  # 鍏堟媺鍙?00绡囩浉鍏冲害鏈€楂樼殑
+        "limit": max(top_k, min(request_limit, 100)),
         "fields": SEMANTIC_SCHOLAR_FIELDS
     }
     
@@ -458,6 +537,11 @@ def search_semantic_scholar_hot_papers(
     logger.info("[S2] Query: '%s'", query)
     query_string = urllib.parse.urlencode(params)
     cache_key = f"{SEMANTIC_SCHOLAR_API_URL}?{query_string}"
+    cooldown = _cooldown_remaining(cache_dir, "s2", query)
+    if cooldown > 0:
+        RATE_LIMIT_HIT = True
+        logger.warning("[S2] Cooldown active for '%s' (%ds); skipping", query, cooldown)
+        return []
     
     for attempt in range(max_retries):
         try:
@@ -531,7 +615,6 @@ def search_semantic_scholar_hot_papers(
             return sorted_papers[:top_k]
             
         except Exception as e:
-            global RATE_LIMIT_HIT
             error_msg = str(e)
             logger.warning("[S2] Error (attempt %d/%d): %s", attempt + 1, max_retries, e)
             
@@ -544,6 +627,7 @@ def search_semantic_scholar_hot_papers(
             
             if is_rate_limit:
                 RATE_LIMIT_HIT = True
+                _set_cooldown(cache_dir, "s2", query, _retry_after_seconds(e, S2_RATE_LIMIT_WAIT * 5))
 
             if attempt < max_retries - 1:
                 # 瀵逛簬 429 閿欒锛屼娇鐢ㄦ洿闀跨殑绛夊緟鏃堕棿
@@ -566,6 +650,8 @@ def search_hot_papers_from_categories(
     start_date: datetime,
     end_date: datetime,
     top_k_per_category: int = 5,
+    request_limit: int = 25,
+    max_queries: int = 3,
     config: Optional[Dict] = None,
     cache_dir: Optional[Path] = None,
     cache_ttl_seconds: int = 0
@@ -610,7 +696,7 @@ def search_hot_papers_from_categories(
             seen_queries.add(q_lower)
             unique_queries.append(q)
 
-    for query in unique_queries:
+    for query_index, query in enumerate(unique_queries[:max_queries], start=1):
 
         try:
             papers = search_semantic_scholar_hot_papers(
@@ -618,6 +704,7 @@ def search_hot_papers_from_categories(
                 start_date=start_date,
                 end_date=end_date,
                 top_k=top_k_per_category,
+                request_limit=request_limit,
                 cache_dir=cache_dir,
                 cache_ttl_seconds=cache_ttl_seconds,
             )
@@ -640,12 +727,331 @@ def search_hot_papers_from_categories(
                 # 娌℃湁 arXiv ID 鐨勪篃淇濈暀锛堝彲鑳芥槸鍏朵粬鏉ユ簮鐨勮鏂囷級
                 all_hot_papers.append(p)
         
-        time.sleep(S2_CATEGORY_REQUEST_INTERVAL)
+        if query_index < min(len(unique_queries), max_queries):
+            time.sleep(S2_CATEGORY_REQUEST_INTERVAL)
     
     # 鏈€缁堟寜褰卞搷鍔涘紩鐢ㄦ暟鎺掑簭
     all_hot_papers.sort(key=lambda x: x.get("influentialCitationCount", 0), reverse=True)
     
     return all_hot_papers
+
+
+def _fallback_query(config: Dict, focus_keywords: List[str] = None) -> str:
+    keywords = focus_keywords or _collect_priority_keywords(config, per_domain=2, max_keywords=10)
+    return " OR ".join(f'"{kw}"' if " " in kw else kw for kw in keywords)
+
+
+def _parse_date(value: str) -> Optional[datetime]:
+    if not value:
+        return None
+    clean = value.strip()
+    for fmt in ("%Y-%m-%d", "%Y-%m", "%Y", "%Y %b", "%Y %B", "%b %Y", "%B %Y"):
+        try:
+            return datetime.strptime(clean[:10], fmt)
+        except ValueError:
+            continue
+    year_match = re.search(r"\b(20\d{2}|19\d{2})\b", clean)
+    if year_match:
+        return datetime(int(year_match.group(1)), 1, 1)
+    return None
+
+
+def search_europe_pmc_papers(
+    config: Dict,
+    start_date: datetime,
+    end_date: datetime,
+    top_k: int = 20,
+    focus_keywords: List[str] = None,
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> List[Dict]:
+    query = _fallback_query(config, focus_keywords)
+    date_query = f'FIRST_PDATE:[{start_date.strftime("%Y-%m-%d")} TO {end_date.strftime("%Y-%m-%d")}]'
+    full_query = f"({query}) AND {date_query}"
+    params = {
+        "query": full_query,
+        "format": "json",
+        "pageSize": str(min(top_k, 100)),
+        "sort": "P_PDATE_D",
+    }
+    url = f"{EUROPE_PMC_API_URL}?{urllib.parse.urlencode(params)}"
+    logger.info("[Europe PMC] Query: %s", full_query)
+    try:
+        data = json.loads(_fetch_text(url, timeout=30, cache_dir=cache_dir, cache_ttl_seconds=cache_ttl_seconds, cache_suffix="json"))
+    except Exception as e:
+        logger.warning("[Europe PMC] Search failed: %s", e)
+        return []
+
+    papers = []
+    for item in data.get("resultList", {}).get("result", []):
+        title = item.get("title") or ""
+        abstract = item.get("abstractText") or ""
+        if not title or not abstract:
+            continue
+        doi = item.get("doi") or ""
+        pmid = item.get("pmid") or ""
+        pmcid = item.get("pmcid") or ""
+        url = item.get("fullTextUrlList", {}).get("fullTextUrl", [{}])[0].get("url") if item.get("fullTextUrlList") else ""
+        if not url:
+            url = f"https://europepmc.org/article/MED/{pmid}" if pmid else f"https://doi.org/{doi}" if doi else ""
+        pub_date = item.get("firstPublicationDate") or item.get("pubYear") or ""
+        authors = [a.strip() for a in (item.get("authorString") or "").split(",") if a.strip()]
+        paper = {
+            "title": title,
+            "abstract": re.sub(r"<[^>]+>", " ", abstract),
+            "summary": re.sub(r"<[^>]+>", " ", abstract),
+            "publicationDate": pub_date,
+            "published_date": _parse_date(pub_date),
+            "authors": authors,
+            "url": url,
+            "source": "europe_pmc",
+            "externalIds": {"DOI": doi, "PubMed": pmid, "PubMedCentral": pmcid},
+            "citationCount": int(item.get("citedByCount") or 0),
+            "influentialCitationCount": 0,
+            "openAccessPdf": {"url": f"https://pmc.ncbi.nlm.nih.gov/articles/{pmcid}/pdf/" if pmcid else ""},
+        }
+        papers.append(paper)
+    logger.info("[Europe PMC] Found %d usable papers", len(papers))
+    return papers
+
+
+def search_pubmed_papers(
+    config: Dict,
+    start_date: datetime,
+    end_date: datetime,
+    top_k: int = 20,
+    focus_keywords: List[str] = None,
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> List[Dict]:
+    query = _fallback_query(config, focus_keywords)
+    params = {
+        "db": "pubmed",
+        "term": f"({query}) AND ({start_date.strftime('%Y/%m/%d')}:{end_date.strftime('%Y/%m/%d')}[Date - Publication])",
+        "retmode": "json",
+        "retmax": str(min(top_k, 100)),
+        "sort": "pub date",
+    }
+    url = f"{PUBMED_ESEARCH_URL}?{urllib.parse.urlencode(params)}"
+    logger.info("[PubMed] Query: %s", params["term"])
+    try:
+        data = json.loads(_fetch_text(url, timeout=30, cache_dir=cache_dir, cache_ttl_seconds=cache_ttl_seconds, cache_suffix="json"))
+    except Exception as e:
+        logger.warning("[PubMed] ESearch failed: %s", e)
+        return []
+
+    ids = data.get("esearchresult", {}).get("idlist", [])
+    if not ids:
+        return []
+    params = {
+        "db": "pubmed",
+        "id": ",".join(ids),
+        "retmode": "json",
+    }
+    url = f"{PUBMED_ESUMMARY_URL}?{urllib.parse.urlencode(params)}"
+    try:
+        summary = json.loads(_fetch_text(url, timeout=30, cache_dir=cache_dir, cache_ttl_seconds=cache_ttl_seconds, cache_suffix="json"))
+    except Exception as e:
+        logger.warning("[PubMed] ESummary failed: %s", e)
+        return []
+
+    papers = []
+    result = summary.get("result", {})
+    for pmid in ids:
+        item = result.get(pmid, {})
+        title = item.get("title") or ""
+        if not title:
+            continue
+        pub_date = item.get("pubdate") or ""
+        authors = [a.get("name") for a in item.get("authors", []) if a.get("name")]
+        doi = ""
+        for article_id in item.get("articleids", []):
+            if article_id.get("idtype") == "doi":
+                doi = article_id.get("value") or ""
+        papers.append({
+            "title": title,
+            "abstract": title,
+            "summary": title,
+            "publicationDate": pub_date,
+            "published_date": _parse_date(pub_date),
+            "authors": authors,
+            "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/",
+            "source": "pubmed",
+            "externalIds": {"DOI": doi, "PubMed": pmid},
+            "citationCount": 0,
+            "influentialCitationCount": 0,
+            "openAccessPdf": {"url": ""},
+        })
+    logger.info("[PubMed] Found %d usable papers", len(papers))
+    return papers
+
+
+def search_crossref_papers(
+    config: Dict,
+    start_date: datetime,
+    end_date: datetime,
+    top_k: int = 15,
+    focus_keywords: List[str] = None,
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> List[Dict]:
+    query = " ".join(focus_keywords or _collect_priority_keywords(config, per_domain=1, max_keywords=8))
+    params = {
+        "query.bibliographic": query,
+        "filter": f"from-pub-date:{start_date.strftime('%Y-%m-%d')},until-pub-date:{end_date.strftime('%Y-%m-%d')}",
+        "rows": str(min(top_k, 50)),
+        "sort": "published",
+        "order": "desc",
+    }
+    url = f"{CROSSREF_WORKS_URL}?{urllib.parse.urlencode(params)}"
+    logger.info("[Crossref] Query: %s", query)
+    try:
+        data = json.loads(_fetch_text(url, timeout=30, cache_dir=cache_dir, cache_ttl_seconds=cache_ttl_seconds, cache_suffix="json"))
+    except Exception as e:
+        logger.warning("[Crossref] Search failed: %s", e)
+        return []
+
+    papers = []
+    for item in data.get("message", {}).get("items", []):
+        title = (item.get("title") or [""])[0]
+        abstract = re.sub(r"<[^>]+>", " ", item.get("abstract") or "")
+        if not title:
+            continue
+        date_parts = item.get("published-print", item.get("published-online", item.get("published", {}))).get("date-parts", [[]])[0]
+        pub_date = "-".join(f"{int(x):02d}" for x in date_parts) if date_parts else ""
+        authors = []
+        for author in item.get("author", []):
+            name = " ".join(part for part in [author.get("given"), author.get("family")] if part)
+            if name:
+                authors.append(name)
+        doi = item.get("DOI") or ""
+        papers.append({
+            "title": title,
+            "abstract": abstract or title,
+            "summary": abstract or title,
+            "publicationDate": pub_date,
+            "published_date": _parse_date(pub_date),
+            "authors": authors,
+            "url": item.get("URL") or (f"https://doi.org/{doi}" if doi else ""),
+            "source": "crossref",
+            "externalIds": {"DOI": doi},
+            "citationCount": int(item.get("is-referenced-by-count") or 0),
+            "influentialCitationCount": 0,
+            "openAccessPdf": {"url": ""},
+        })
+    logger.info("[Crossref] Found %d usable papers", len(papers))
+    return papers
+
+
+def search_fallback_sources(
+    sources: List[str],
+    config: Dict,
+    start_date: datetime,
+    end_date: datetime,
+    top_k: int = 20,
+    focus_keywords: List[str] = None,
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> List[Dict]:
+    all_papers: List[Dict] = []
+    for source in sources:
+        if source in {"europe_pmc", "europepmc", "pmc"}:
+            all_papers.extend(search_europe_pmc_papers(config, start_date, end_date, top_k, focus_keywords, cache_dir, cache_ttl_seconds))
+        elif source == "pubmed":
+            all_papers.extend(search_pubmed_papers(config, start_date, end_date, top_k, focus_keywords, cache_dir, cache_ttl_seconds))
+        elif source == "crossref":
+            all_papers.extend(search_crossref_papers(config, start_date, end_date, top_k, focus_keywords, cache_dir, cache_ttl_seconds))
+        else:
+            logger.warning("[fallback] Unknown source '%s'; skipping", source)
+    return all_papers
+
+
+def _external_id(paper: Dict, key: str) -> str:
+    external = paper.get("externalIds") or {}
+    return external.get(key) or external.get(key.lower()) or ""
+
+
+def _pmc_pdf_url(pmcid: str) -> str:
+    if not pmcid:
+        return ""
+    pmcid = str(pmcid).strip()
+    if pmcid and not pmcid.upper().startswith("PMC"):
+        pmcid = f"PMC{pmcid}"
+    return f"https://pmc.ncbi.nlm.nih.gov/articles/{pmcid}/pdf/"
+
+
+def _best_unpaywall_location(data: Dict) -> Dict:
+    locations = []
+    best = data.get("best_oa_location") or {}
+    if best:
+        locations.append(best)
+    locations.extend(data.get("oa_locations") or [])
+    for location in locations:
+        pdf = location.get("url_for_pdf")
+        if pdf:
+            return {"pdf_url": pdf, "landing_url": location.get("url_for_landing_page") or pdf, "source": "unpaywall"}
+    for location in locations:
+        landing = location.get("url_for_landing_page")
+        if landing:
+            return {"pdf_url": "", "landing_url": landing, "source": "unpaywall"}
+    return {}
+
+
+def resolve_open_access_pdf(
+    paper: Dict,
+    unpaywall_email: str = "",
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> Dict:
+    existing_pdf = paper.get("pdf_url") or (paper.get("openAccessPdf") or {}).get("url") or ""
+    pmcid = _external_id(paper, "PubMedCentral") or paper.get("pmcid") or ""
+    if pmcid:
+        pmc_pdf = _pmc_pdf_url(pmcid)
+        if pmc_pdf:
+            paper["pdf_url"] = pmc_pdf
+            paper["oa_source"] = "pmc"
+            paper.setdefault("openAccessPdf", {})["url"] = pmc_pdf
+            return paper
+
+    if existing_pdf:
+        paper["pdf_url"] = existing_pdf
+        paper.setdefault("openAccessPdf", {})["url"] = existing_pdf
+        return paper
+
+    doi = _external_id(paper, "DOI") or paper.get("doi") or ""
+    if doi and unpaywall_email:
+        url = f"{UNPAYWALL_API_URL}/{urllib.parse.quote(doi)}?{urllib.parse.urlencode({'email': unpaywall_email})}"
+        try:
+            data = json.loads(_fetch_text(url, timeout=20, cache_dir=cache_dir, cache_ttl_seconds=cache_ttl_seconds, cache_suffix="json"))
+            location = _best_unpaywall_location(data)
+            if location:
+                paper["oa_source"] = location.get("source")
+                if location.get("pdf_url"):
+                    paper["pdf_url"] = location["pdf_url"]
+                    paper.setdefault("openAccessPdf", {})["url"] = location["pdf_url"]
+                if location.get("landing_url") and not paper.get("url"):
+                    paper["url"] = location["landing_url"]
+        except Exception as e:
+            logger.warning("[Unpaywall] DOI %s lookup failed: %s", doi, e)
+    return paper
+
+
+def resolve_open_access_pdfs(
+    papers: List[Dict],
+    unpaywall_email: str = "",
+    cache_dir: Optional[Path] = None,
+    cache_ttl_seconds: int = 0,
+) -> List[Dict]:
+    if not papers:
+        return papers
+    for paper in papers:
+        resolve_open_access_pdf(
+            paper,
+            unpaywall_email=unpaywall_email,
+            cache_dir=cache_dir,
+            cache_ttl_seconds=cache_ttl_seconds,
+        )
+    return papers
 
 
 def parse_arxiv_xml(xml_content: str) -> List[Dict]:
@@ -1116,6 +1522,20 @@ def main():
                         help='Disable HTTP response cache')
     parser.add_argument('--s2-interval', type=int, default=S2_CATEGORY_REQUEST_INTERVAL,
                         help='Seconds to wait between Semantic Scholar queries')
+    parser.add_argument('--s2-request-limit', type=int, default=25,
+                        help='Semantic Scholar API limit per query (lower is more rate-limit friendly)')
+    parser.add_argument('--s2-max-queries', type=int, default=3,
+                        help='Maximum number of Semantic Scholar keyword queries per run')
+    parser.add_argument('--arxiv-mode', choices=['auto', 'keyword', 'category'], default='auto',
+                        help='arXiv search mode: auto/keyword is faster and less likely to hit broad-query 429')
+    parser.add_argument('--arxiv-max-retries', type=int, default=1,
+                        help='Maximum arXiv retries per query; low default avoids repeated 429 loops')
+    parser.add_argument('--fallback-sources', type=str, default='europe_pmc,pubmed,crossref',
+                        help='Comma-separated fallback sources when arXiv has no recent papers')
+    parser.add_argument('--fallback-top-k', type=int, default=20,
+                        help='Maximum papers to fetch per fallback source')
+    parser.add_argument('--no-fallback-sources', action='store_true',
+                        help='Disable PubMed/Europe PMC/Crossref fallback searches')
 
     args = parser.parse_args()
 
@@ -1140,6 +1560,8 @@ def main():
     config = load_research_config(args.config)
     cache_dir = None if args.no_cache else Path(args.cache_dir)
     cache_ttl_seconds = 0 if args.no_cache else args.cache_ttl_hours * 3600
+    priority_keywords = _collect_priority_keywords(config, per_domain=2, max_keywords=12)
+    unpaywall_email = (config.get("unpaywall_email") or config.get("email") or "").strip()
 
     # 瑙ｆ瀽鐩爣鏃ユ湡
     target_date = None
@@ -1161,10 +1583,12 @@ def main():
 
     # 瑙ｆ瀽鍒嗙被
     categories = args.categories.split(',')
+    fallback_sources = [] if args.no_fallback_sources else [s.strip().lower() for s in args.fallback_sources.split(',') if s.strip()]
 
     all_scored_papers = []
     recent_papers = []
     hot_papers = []
+    fallback_papers = []
 
     if focus_keywords:
         # ========== Focus 妯″紡锛氬叧閿瘝鎼滅储涓轰富 ==========
@@ -1177,6 +1601,7 @@ def main():
             start_date=window_30d_start,
             end_date=window_30d_end,
             max_results=args.max_results,
+            max_retries=args.arxiv_max_retries,
             cache_dir=cache_dir,
             cache_ttl_seconds=cache_ttl_seconds,
         )
@@ -1194,6 +1619,31 @@ def main():
         else:
             logger.warning("No papers found for focus keywords")
 
+        if not focus_papers and fallback_sources:
+            logger.info("=" * 70)
+            logger.info("Step 1b (Focus): Searching fallback sources: %s", ", ".join(fallback_sources))
+            logger.info("=" * 70)
+            fallback_papers = search_fallback_sources(
+                sources=fallback_sources,
+                config=config,
+                start_date=window_30d_start,
+                end_date=window_30d_end,
+                top_k=args.fallback_top_k,
+                focus_keywords=focus_keywords,
+                cache_dir=cache_dir,
+                cache_ttl_seconds=cache_ttl_seconds,
+            )
+            if fallback_papers:
+                scored_fallback = filter_and_score_papers(
+                    papers=fallback_papers,
+                    config=config,
+                    target_date=target_date,
+                    is_hot_paper_batch=False,
+                    focus_keywords=focus_keywords,
+                )
+                logger.info("Scored %d fallback papers for focus", len(scored_fallback))
+                all_scored_papers.extend(scored_fallback)
+
         # Semantic Scholar 涔熸寜 focus 鎼滅储锛堣ˉ鍏呴珮寮曠敤璁烘枃锛?
         if not args.skip_hot_papers:
             logger.info("=" * 70)
@@ -1207,6 +1657,7 @@ def main():
                     start_date=window_1y_start,
                     end_date=window_1y_end,
                     top_k=20,
+                    request_limit=args.s2_request_limit,
                     cache_dir=cache_dir,
                     cache_ttl_seconds=cache_ttl_seconds,
                 )
@@ -1231,14 +1682,27 @@ def main():
         logger.info("Step 1: Searching recent papers (last 30 days) from arXiv")
         logger.info("=" * 70)
 
-        recent_papers = search_arxiv_by_date_range(
-            categories=categories,
-            start_date=window_30d_start,
-            end_date=window_30d_end,
-            max_results=args.max_results,
-            cache_dir=cache_dir,
-            cache_ttl_seconds=cache_ttl_seconds,
-        )
+        if args.arxiv_mode in ("auto", "keyword") and priority_keywords:
+            logger.info("[arXiv] Using priority keyword mode to reduce broad-query 429 risk: %s", priority_keywords)
+            recent_papers = search_arxiv_by_keywords(
+                keywords=priority_keywords,
+                start_date=window_30d_start,
+                end_date=window_30d_end,
+                max_results=min(args.max_results, 50),
+                max_retries=args.arxiv_max_retries,
+                cache_dir=cache_dir,
+                cache_ttl_seconds=cache_ttl_seconds,
+            )
+        else:
+            recent_papers = search_arxiv_by_date_range(
+                categories=categories,
+                start_date=window_30d_start,
+                end_date=window_30d_end,
+                max_results=args.max_results,
+                max_retries=args.arxiv_max_retries,
+                cache_dir=cache_dir,
+                cache_ttl_seconds=cache_ttl_seconds,
+            )
 
         if recent_papers:
             scored_recent = filter_and_score_papers(
@@ -1252,6 +1716,30 @@ def main():
         else:
             logger.warning("No recent papers found")
 
+        if not recent_papers and fallback_sources:
+            logger.info("=" * 70)
+            logger.info("Step 1b: Searching fallback sources: %s", ", ".join(fallback_sources))
+            logger.info("=" * 70)
+            fallback_papers = search_fallback_sources(
+                sources=fallback_sources,
+                config=config,
+                start_date=window_30d_start,
+                end_date=window_30d_end,
+                top_k=args.fallback_top_k,
+                focus_keywords=[],
+                cache_dir=cache_dir,
+                cache_ttl_seconds=cache_ttl_seconds,
+            )
+            if fallback_papers:
+                scored_fallback = filter_and_score_papers(
+                    papers=fallback_papers,
+                    config=config,
+                    target_date=target_date,
+                    is_hot_paper_batch=False,
+                )
+                logger.info("Scored %d fallback papers", len(scored_fallback))
+                all_scored_papers.extend(scored_fallback)
+
         # 鎼滅储杩囧幓涓€骞寸殑楂樺奖鍝嶅姏璁烘枃锛圫emantic Scholar锛?
         if not args.skip_hot_papers:
             logger.info("=" * 70)
@@ -1264,6 +1752,8 @@ def main():
                     start_date=window_1y_start,
                     end_date=window_1y_end,
                     top_k_per_category=5,
+                    request_limit=args.s2_request_limit,
+                    max_queries=args.s2_max_queries,
                     config=config,
                     cache_dir=cache_dir,
                     cache_ttl_seconds=cache_ttl_seconds,
@@ -1290,6 +1780,15 @@ def main():
     logger.info("=" * 70)
     logger.info("Step 3: Merging and ranking results")
     logger.info("=" * 70)
+
+    if all_scored_papers:
+        logger.info("Resolving OA PDFs via PMC%s", " and Unpaywall" if unpaywall_email else "")
+        resolve_open_access_pdfs(
+            all_scored_papers,
+            unpaywall_email=unpaywall_email,
+            cache_dir=cache_dir,
+            cache_ttl_seconds=cache_ttl_seconds,
+        )
     
     # 鎸夋帹鑽愯瘎鍒嗘帓搴?
     all_scored_papers.sort(key=lambda x: x['scores']['recommendation'], reverse=True)
@@ -1331,6 +1830,8 @@ def main():
                 }
             },
             'total_recent': len(recent_papers),
+            'total_fallback': len(fallback_papers),
+            'fallback_sources': fallback_sources,
             'total_hot': len(hot_papers),
             'total_unique': 0,
             'top_papers': []
@@ -1362,6 +1863,8 @@ def main():
             }
         },
         'total_recent': len(recent_papers),
+        'total_fallback': len(fallback_papers),
+        'fallback_sources': fallback_sources,
         'total_hot': len(hot_papers),
         'total_unique': len(unique_papers),
         'top_papers': top_papers

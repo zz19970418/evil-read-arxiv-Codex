@@ -111,13 +111,19 @@ Set-Location $Skill
 python .\scripts\search_arxiv.py `
   --config $Config `
   --output .\arxiv_filtered.json `
-  --max-results 80 `
+  --max-results 50 `
   --top-n 10 `
   --categories "eess.IV,cs.CV,cs.AI,cs.LG,physics.optics" `
   --target-date "YYYY-MM-DD" `
   --cache-dir .\.cache `
-  --cache-ttl-hours 24 `
-  --s2-interval 12
+  --cache-ttl-hours 72 `
+  --arxiv-mode auto `
+  --arxiv-max-retries 1 `
+  --fallback-sources "europe_pmc,pubmed,crossref" `
+  --fallback-top-k 20 `
+  --s2-request-limit 25 `
+  --s2-max-queries 3 `
+  --s2-interval 20
 ```
 
 If the user did not provide a target date, omit `--target-date`.
@@ -127,6 +133,7 @@ Useful optional flags:
 - `--skip-hot-papers`: skip Semantic Scholar hot-paper search if the network is slow or unavailable.
 - `--focus "topic words"`: narrow the search to a temporary focus.
 - `--days 30`: change the recent-paper window.
+- `--no-fallback-sources`: disable PubMed / Europe PMC / Crossref fallback searches.
 
 If arXiv or Semantic Scholar returns HTTP 429, do not immediately repeat the same broad query many times. Prefer:
 
@@ -137,6 +144,18 @@ If arXiv or Semantic Scholar returns HTTP 429, do not immediately repeat the sam
 - Wait 10-30 minutes before retrying broad queries.
 - Use available previous JSON or web-search fallback only when the user needs a note immediately.
 
+Default rate-limit strategy:
+
+- Prefer arXiv keyword mode over broad category scans. The script automatically builds priority keywords from `research_interests.yaml`.
+- Keep `--arxiv-max-retries 1` during routine daily runs. Repeating the same rate-limited query usually extends the block.
+- Use `--cache-ttl-hours 72` so repeated local tests reuse results instead of hitting APIs again.
+- Limit Semantic Scholar to `--s2-max-queries 3` and `--s2-request-limit 25` unless the user explicitly wants a broader, slower search.
+- The script writes short cooldown files under `.cache/cooldowns/` after 429 responses. During cooldown it skips the same query quickly instead of waiting and retrying.
+- When arXiv returns no recent papers, fallback sources run automatically in this order: Europe PMC, PubMed, Crossref. Europe PMC is preferred for ophthalmology/OCT biomedical literature because it often includes abstracts, DOI, PMID/PMCID, and open-access links.
+- The script resolves legal open-access PDFs in this order: PMC PDF first, then existing source PDF, then Unpaywall when `unpaywall_email` is configured.
+- If the user has a Semantic Scholar API key, put it in `99_System/Config/research_interests.yaml` as `semantic_scholar_api_key`; this improves reliability.
+- If the user wants Unpaywall lookup, put an email in `99_System/Config/research_interests.yaml` as `unpaywall_email`.
+
 The script writes `status` and `rate_limited` into `arxiv_filtered.json`; if `status` is `rate_limited`, explain that API limits prevented fresh automated retrieval.
 
 The script writes `arxiv_filtered.json` with:
@@ -144,6 +163,7 @@ The script writes `arxiv_filtered.json` with:
 - `target_date`
 - `date_windows`
 - `total_recent`
+- `total_fallback`
 - `total_hot`
 - `total_unique`
 - `top_papers`

@@ -5,7 +5,8 @@
   "description": "Local paper recommendation workspace UI for evil-read-arxiv.",
   "scripts": {
     "dev": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build:data": "node scripts/build-static-data.js"
   },
   "engines": {
     "node": ">=20"

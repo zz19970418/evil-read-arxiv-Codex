@@ -11,6 +11,9 @@ web/server-runtime.log
 .env
 .env.*
 !.env.example
+web/config.local.json
+web/ai-queue/
+web/ai-results/
 *secret*
 *token*
 *credential*
@@ -23,4 +26,3 @@ build/
 
 # Obsidian local workspace state
 .obsidian/workspace.json
-
